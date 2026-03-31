@@ -42,7 +42,7 @@ class SecurityHeadersMiddleware
             . "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.datatables.net https://code.ionicframework.com https://maxcdn.bootstrapcdn.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://pro.fontawesome.com https://www.shieldui.com https://cdn.jsdelivr.net; "
             . "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://code.ionicframework.com https://maxcdn.bootstrapcdn.com https://stackpath.bootstrapcdn.com https://pro.fontawesome.com https://www.shieldui.com; "
             . "img-src 'self' data: blob: https://swarnimpolling.s3.ap-south-1.amazonaws.com; "
-            . "connect-src 'self' https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://code.jquery.com; "
+            . "connect-src 'self' https://swarnimpolling.s3.ap-south-1.amazonaws.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://code.jquery.com; "
             . "frame-src https://www.youtube.com https://www.youtube-nocookie.com; "
             . "object-src 'none'; "
             . "frame-ancestors 'self'; "

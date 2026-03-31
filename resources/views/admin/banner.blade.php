@@ -46,7 +46,7 @@
                             <td>{{ ucwords($emp->language) }}</td>
                             <td>{{ $emp->day }}</td>
                             <td>
-                                <a href="{{ asset($emp->banner_path) }}" class="download-link" target="_blank" download>
+                                <a href="{{ $emp->banner_path }}" class="download-link">
                                     <i class="fa-solid fa-download"></i>
                                 </a>
                             </td>
@@ -123,5 +123,42 @@
                 });
         });
     </script>
+<script  nonce="{{ $cspNonce }}">
+    document.querySelectorAll('.download-link').forEach(link => {
+        link.addEventListener('click', async function (e) {
+            e.preventDefault();
 
+            let url = this.getAttribute('href');
+            let icon = this.innerHTML;
+
+            this.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Download failed');
+
+                const blob = await res.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                let fileName = url.split('/').pop().split('?')[0] || 'poster.jpg';
+
+                let a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = fileName;
+
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                window.URL.revokeObjectURL(blobUrl);
+
+            } catch (err) {
+                console.error(err);
+                alert('Download failed');
+            }
+
+            this.innerHTML = icon;
+        });
+    });
+</script>
 @endsection

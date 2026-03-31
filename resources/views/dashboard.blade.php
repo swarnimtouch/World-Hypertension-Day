@@ -307,12 +307,11 @@
           <td>{{ !empty($poster->name) ? $poster->name : '-' }}</td>
           <td>{{ $poster->created_at->format('F d, Y') }}</td>
           <td>{{ucwords($poster->language ??'-')}}</td>
-          <td>
-          <a href="{{ asset($poster->banner_path) }}" class="download-link" target="_blank" download>
-            <i class="fa-solid fa-download"></i> Download
-          </a>
-
-          </td>
+            <td>
+                <a href="{{ $poster->banner_path }}" class="download-link">
+                    <i class="fa-solid fa-download"></i> Download
+                </a>
+            </td>
 
         </tr>
       @endforeach
@@ -640,7 +639,59 @@
           document.getElementById('dayModal').style.display = "none";
       }
   </script>
+  <script nonce="{{ $cspNonce }}">
+      document.addEventListener('DOMContentLoaded', function () {
 
+          document.querySelectorAll('.download-link').forEach(link => {
+
+              link.addEventListener('click', async function (e) {
+                  e.preventDefault();
+
+                  let url = this.getAttribute('href');
+                  let btn = this;
+
+                  // 🔄 Loader
+                  let originalText = btn.innerHTML;
+                  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Downloading...';
+                  btn.style.pointerEvents = 'none';
+
+                  try {
+                      const response = await fetch(url);
+
+                      if (!response.ok) {
+                          throw new Error('Download failed');
+                      }
+
+                      const blob = await response.blob();
+                      const blobUrl = window.URL.createObjectURL(blob);
+
+                      // 📁 filename extract
+                      let fileName = url.split('/').pop().split('?')[0] || 'poster.jpg';
+
+                      let a = document.createElement('a');
+                      a.href = blobUrl;
+                      a.download = fileName;
+
+                      document.body.appendChild(a);
+                      a.click();
+                      a.remove();
+
+                      window.URL.revokeObjectURL(blobUrl);
+
+                  } catch (error) {
+                      console.error('Download error:', error);
+                      alert('Download failed. Please try again.');
+                  }
+
+                  // ✅ Reset button
+                  btn.innerHTML = originalText;
+                  btn.style.pointerEvents = 'auto';
+              });
+
+          });
+
+      });
+  </script>
 </body>
 
 </html>

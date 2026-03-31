@@ -252,9 +252,9 @@
         });
 
         // ── SAVE & DOWNLOAD (store + download) — button click ONLY ────────────────
-        $('#previewBtn1').on('click', function (e) {
+        $('#previewBtn1').on('click', async function (e) {
             e.preventDefault();
-            e.stopPropagation();   // don't bubble
+            e.stopPropagation();
 
             let day        = $('#day_select').val();
             let doctorName = formatDoctorName($('#doctor_name_text').val());
@@ -265,54 +265,69 @@
                 return;
             }
 
-            // Disable button while downloading
-            $('#previewBtn1').prop('disabled', true).text('Downloading...');
+            let btn = $('#previewBtn1');
+            btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Downloading...');
 
-            fetch("{{ route('doctor.banner.preview') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    day:        day,
-                    doctor_id:  $('#doctor_id').val(),
-                    doctor_name: doctorName,
-                    language:   language,
-                    hospital:   '',
-                    city:       '',
-                    country:    ''
-                })
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Store error');
-                    return response.json();
-                })
-                .then(data => {
-                    let safeName = doctorName
-                        ? doctorName.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')
-                        : '';
-                    let fileName = safeName ? `${safeName}_Day${day}.jpg` : `Day${day}.jpg`;
-
-                    let a = document.createElement('a');
-                    a.href     = data.path;
-                    a.download = fileName;
-                    a.target   = '_blank';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-
-                    setTimeout(() => URL.revokeObjectURL(data.path), 5000);
-
-                    $('#previewBtn1').prop('disabled', false).html('<i class="fa-solid fa-download"></i> Save & Download');
-
-                    setTimeout(() => window.location.reload(), 10000);
-                })
-                .catch(error => {
-                    console.error('Download error:', error);
-                    alert('Download failed. Please try again.');
-                    $('#previewBtn1').prop('disabled', false).html('<i class="fa-solid fa-download"></i> Save & Download');
+            try {
+                // 🔹 Step 1: API call (Laravel)
+                const response = await fetch("{{ route('doctor.banner.preview') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        day: day,
+                        doctor_id: $('#doctor_id').val(),
+                        doctor_name: doctorName,
+                        language: language,
+                        hospital: '',
+                        city: '',
+                        country: ''
+                    })
                 });
+
+                if (!response.ok) throw new Error('Store error');
+
+                const data = await response.json();
+
+                // 🔹 Step 2: S3 file fetch (IMPORTANT FIX)
+                const fileResponse = await fetch(data.path);
+
+                if (!fileResponse.ok) throw new Error('File download failed');
+
+                const blob = await fileResponse.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                // 🔹 Filename
+                let safeName = doctorName
+                    ? doctorName.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')
+                    : '';
+                let fileName = safeName ? `${safeName}_Day${day}.jpg` : `Day${day}.jpg`;
+
+                // 🔹 Force download
+                let a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = fileName;
+
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                window.URL.revokeObjectURL(blobUrl);
+
+                // 🔹 Reset button
+                btn.prop('disabled', false).html('<i class="fa-solid fa-download"></i> Save & Download');
+
+                // 🔹 optional reload
+                setTimeout(() => window.location.reload(), 5000);
+
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download failed. Please try again.');
+
+                btn.prop('disabled', false).html('<i class="fa-solid fa-download"></i> Save & Download');
+            }
         });
 
         // ── Auto-select day from URL ───────────────────────────────────────────────
