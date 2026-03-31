@@ -1,0 +1,195 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../images/bg.png") center/cover no-repeat;
+  padding: 20px;
+}
+
+.login-container {
+  width: 350px;
+  background: #fff;
+  padding: 36px 28px;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  animation: fadeIn 0.9s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.logo img {
+  display: block;
+  max-width: 180px;
+  margin: 0 auto;
+  margin-top: -40px;
+  margin-bottom: -40px;
+  border-radius: 8px;
+}
+
+h2 {
+  margin: 10px 0 22px;
+  color: #e53935;
+  font-weight: 600;
+}
+.alert {
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 4px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.left-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d17a6d;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 44px 12px 38px;
+  border: 2px solid #f0b4aa;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  z-index: 0;
+  background: #fff8f7;
+  color: #333;
+}
+
+.input-group input::placeholder {
+  color: #c98a7f;
+}
+
+.input-group input:focus {
+  border-color: #e53935;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.15);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a56c62;
+  z-index: 2;
+  border-radius: 6px;
+}
+
+.toggle-password:hover {
+  color: #e53935;
+  background: rgba(229, 57, 53, 0.08);
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 0;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #e53935, #d81b60);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(216, 27, 96, 0.18);
+  background: linear-gradient(135deg, #d81b60, #e53935);
+}
+
+.login-btn:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.footer-text {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6d7278;
+}
+.footer-text a {
+  color: #e53935;
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-text a:hover {
+  text-decoration: underline;
+}
+/* --- ADD THIS at the END of your existing <style> block --- */
+@media (max-width: 768px) {
+  /* side images go behind everything and become non-interactive */
+  .left-side-line,
+  .right-side-line {
+    z-index: 0 !important;         /* behind page content */
+    pointer-events: none !important;/* allow taps to pass through */
+    width: 60px !important;        /* slightly thinner on mobile (optional) */
+    top: 0;
+    height: 100vh;
+  }
+
+  /* make sure the images themselves don't accidentally cover content */
+  .left-side-line img,
+  .right-side-line img {
+    display: block;
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.98;                 /* optional: slightly dim if needed */
+  }
+
+  /* ensure login container and its children sit above the lines */
+  .login-container,
+  .login-container * ,
+  .logo,
+  form,
+  .login-btn,
+  input {
+    position: relative !important;
+    z-index: 2 !important;         /* bring all main UI above side images */
+  }
+
+  /* make sure body has a normal stacking context */
+  body {
+    position: relative;
+    z-index:1;
+}
+}

@@ -1,0 +1,721 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 28px;
+  color: #222;
+  background: url("../images/bg.png") center/cover no-repeat;
+}
+
+.topbar {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.topbar-inner {
+  display: flex;
+  justify-content: space-between; /* left logo, center text, right logo */
+  align-items: center;
+  padding: 0px 18px;
+  border-radius: 10px;
+  background: #f0b4aa;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.brand-logo {
+  height: 120px;
+  width: auto;
+  border-radius: 6px;
+}
+
+.brand1-logo {
+  height: 75px;
+  width: auto;
+  border-radius: 6px;
+  margin-left: auto;   /* 👈 push it to far right */
+  display: block;
+}
+
+.welcome h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #BA131A;
+}
+
+.welcome .username {
+  color: #BA131A;
+}
+
+.subtitle {
+  margin-top: 4px;
+  font-size: 22px;
+  color: #e53935;
+  text-align: center;
+}
+
+.page-wrap {
+  width: 100%;
+  max-width: 1300px;
+  /* bada container so both cards widen */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* stack vertically */
+  align-items: stretch;
+  gap: 36px;
+  /* thoda zyada gap for breathing room */
+  padding-bottom: 8px;
+}
+
+.card {
+  width: 100%;
+  max-width: 1200px;
+  /* allow big card inside page-wrap */
+  margin: 0 auto;
+  background: #f0b4aa;
+  border-radius: 12px;
+  padding: 28px 28px;
+  /* larger padding */
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.9s ease;
+}
+
+.card-header h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #e53935;
+  font-weight: 600;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(80px, 1fr));
+  /* 10 columns */
+  gap: 16px;
+  align-items: stretch;
+}
+
+.day-card {
+  background: #fff8f7;
+  border: 2px solid #f0b4aa;
+  border-radius: 10px;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
+  user-select: none;
+  position: relative;
+  outline: none;
+}
+
+.day-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(229, 57, 53, 0.18);
+  border-color: #f0b4aa;
+}
+
+.day-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(229, 57, 53, 0.12);
+}
+
+.day-card:focus {
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.15);
+  border-color: #e53935;
+}
+
+.day-card.selected {
+  background: linear-gradient(135deg, #e53935, #d81b60);
+  color: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(216, 27, 96, 0.18);
+}
+
+.day-card .label {
+  display: block;
+  font-size: 14px;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 9999;
+  background: rgba(229, 57, 53, 0.95);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
+  pointer-events: none;
+  transform: translateY(0);
+  opacity: 0;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  white-space: nowrap;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: rgba(229, 57, 53, 0.95);
+  bottom: -5px;
+}
+
+.tooltip.show {
+  opacity: 1;
+  transform: translateY(-6px);
+}
+
+.username {
+  color: white;
+}
+
+/* .subtitle {
+    color: white;
+} */
+
+.tooltip.below::after {
+  top: -5px;
+  bottom: auto;
+}
+
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.recent-downloads .card-header h3 {
+  font-size: 16px;
+  color: #e53935;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.recent-downloads .card {
+  padding: 30px;
+}
+
+/* if you used .card wrapper for section */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  min-height: 160px;
+  /* ensures table area has height even when empty */
+  padding: 8px 0;
+}
+
+.downloads-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #333;
+}
+
+.downloads-table th,
+.downloads-table td {
+  padding: 14px 18px;
+  /* increase table cell padding for breathing room */
+  text-align: left;
+  border-bottom: 1px solid #f2e7e6;
+}
+
+.downloads-table th {
+  font-weight: 700;
+  color: #444;
+  background: #fff8f7;
+}
+
+.downloads-table tbody tr:hover {
+  background: #fff3f2;
+}
+
+.download-link {
+  color: #e53935;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.download-link i {
+  margin-right: 6px;
+}
+
+.download-link:hover {
+  color: #b71c1c;
+}
+
+.page-wrap {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* <-- stack vertically */
+  align-items: stretch;
+  /* cards fill horizontal space */
+  gap: 28px;
+  /* space between the two cards */
+  padding-bottom: 8px;
+}
+
+.card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.view-all {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.view-all a {
+  font-size: 13px;
+  color: #e53935;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-all a:hover {
+  text-decoration: underline;
+}
+
+.day-card {
+  animation: cardPop 0.45s ease both;
+}
+
+.days-grid .day-card:nth-child(odd) {
+  animation-delay: 0.03s;
+}
+
+.days-grid .day-card:nth-child(even) {
+  animation-delay: 0.06s;
+}
+
+.days-grid .day-card:nth-child(3n) {
+  animation-delay: 0.09s;
+}
+
+@media (max-width: 720px) {
+  .topbar-inner {
+    flex-direction: row;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .days-grid {
+    gap: 10px;
+  }
+
+  .day-card {
+    min-height: 68px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ensure parent for absolute positioning */
+.page {
+  position: relative;
+  /* add this so logout button positions relative to page container */
+}
+
+/* Logout button (same visual language as back-btn but positioned right-top outside shell) */
+.logout-btn {
+  position: absolute;
+  top: 50px;
+  /* adjust vertical offset to sit near shell's top */
+  right: -120px;
+  /* adjust horizontal offset so it aligns with shell's right edge */
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 2px solid #f0b4aa;
+  background: #fff;
+  color: #e53935;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* icon */
+.logout-btn i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* hover: same effect as back-btn */
+.logout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  ;
+  background: linear-gradient(135deg, #D2AC67);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* keyboard focus */
+.logout-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.06);
+}
+
+/* responsive — on narrow screens move it inside flow (so it won't overlap) */
+@media (max-width: 720px) {
+  .logout-btn {
+    position: static;
+    display: inline-flex;
+    margin: 8px 110px 12px auto;
+    /* place above/back area on small screens */
+    float: right;
+
+  }
+}
+
+/* Recent downloads header layout */
+.recent-downloads .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Search container */
+.search-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* Input box look to match theme */
+.search-input-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #f0b4aa;
+  /* theme border */
+  border-radius: 10px;
+  padding: 6px 10px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+}
+
+/* search icon inside input */
+.search-input-wrap .search-icon {
+  font-size: 14px;
+  margin-right: 8px;
+  color: #e53935;
+}
+
+/* actual input */
+#downloadsSearch {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  min-width: 250px;
+  padding: 6px 8px;
+  font-family: inherit;
+  color: #333;
+  background: transparent;
+}
+
+/* clear button */
+#clearSearchBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 6px;
+  color: #e53935;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+#clearSearchBtn:hover {
+  background: rgba(229, 57, 53, 0.06);
+}
+
+/* when very small screens shrink input */
+@media (max-width: 640px) {
+  #downloadsSearch {
+    min-width: 140px;
+  }
+}
+
+/* No results row */
+.downloads-table .no-results td {
+  text-align: center;
+  padding: 28px 18px;
+  color: #777;
+  font-style: italic;
+  background: transparent;
+  border-bottom: none;
+}
+
+/* Hide native browser clear/cancel buttons for the #downloadsSearch input */
+#downloadsSearch::-webkit-search-cancel-button,
+#downloadsSearch::-webkit-search-decoration,
+#downloadsSearch::-webkit-search-results-button,
+#downloadsSearch::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+/* IE/Edge clear/reveal buttons */
+#downloadsSearch::-ms-clear,
+#downloadsSearch::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+/* table footer container */
+.table-footer {
+  display: flex;
+  justify-content: flex-end;
+  /* bottom-right alignment inside .table-wrap */
+  padding-top: 10px;
+  padding-right: 4px;
+}
+
+/* pagination */
+.pagination {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  user-select: none;
+  font-size: 13px;
+}
+
+/* page button base */
+.pagination .page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: #fff;
+  color: #e53935;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  transition: background .14s ease, color .14s ease, transform .12s ease;
+}
+
+/* small arrow buttons */
+.pagination .page-btn.icon {
+  min-width: 36px;
+  padding: 0 8px;
+}
+
+/* hover / active */
+.pagination .page-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.06);
+  background: linear-gradient(135deg, #ffe9e8, #fff);
+}
+
+/* current page */
+.pagination .page-btn.active {
+  background: linear-gradient(135deg, #e53935, #d81b60);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+/* disabled */
+.pagination .page-btn.disabled {
+  opacity: 0.46;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* small ellipsis */
+.pagination .ellipsis {
+  padding: 0 6px;
+  color: #888;
+  font-weight: 600;
+}
+
+/* responsive: shrink page btns on very small screens */
+@media (max-width: 420px) {
+  .pagination .page-btn {
+    min-width: 28px;
+    height: 30px;
+    font-size: 12px;
+    padding: 06px;
+  }
+  @media (max-width: 720px) {
+  .brand-logo { height: 80px; }
+  .brand1-logo { height: 55px; }
+  .welcome h1 { font-size: 18px; }
+  .search-input-wrap{width: 80%;}
+}
+
+@media (max-width: 480px) {
+  .brand-logo { height: 60px; }
+  .brand1-logo { height: 45px; }
+  .welcome h1 { font-size: 16px; }
+  .search-input-wrap{width: 70%;}
+
+}
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;  /* Hide top button */
+  }
+  .mobile-only {
+    display: block; /* Show bottom button */
+    margin-top: 15px;
+    text-align: center;
+  }
+}
+
+}
+#logoutBtnMobile {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  #logoutBtnMobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+}
+
+/* --- Mobile-only: move side-lines to background under topbar & cards --- */
+@media (max-width: 768px) {
+  /* Make side images non-interactive and behind page content */
+  .left-side-line,
+  .right-side-line {
+    z-index: 0 !important;       /* behind content (content will be z-index:1/2) */
+    pointer-events: none;        /* allow taps/clicks to pass through */
+    width: 60px;                 /* optionally reduce thickness on mobile */
+  }
+
+  /* Ensure key content sits above the side images */
+  .topbar,
+  .card,
+  .recent-downloads,
+  .topbar-inner,
+  .page-wrap {
+    position: relative;          /* create stacking context */
+    z-index: 2 !important;       /* sit above the side images */
+  }
+
+  /* Mobile tweaks so lines don't overlap weirdly near edges */
+  .left-side-line { left: 0; top: 0; height: 100vh; }
+  .right-side-line { right: 0; top: 0; height: 100vh; }
+
+  /* If your background image or body uses z-index contexts, make sure page container is above */
+  body, .page-wrap {
+    z-index: 1;
+    position:relative;}
+}
+/* ---------- Mobile: stack Recent Downloads heading + search under it ---------- */
+@media (max-width: 768px) {
+  /* make the card-header stack vertically so heading is above search */
+  .recent-downloads .card-header {
+    flex-direction: column;
+    align-items: flex-start; /* left align children */
+    gap: 8px;                /* small spacing between heading and search */
+  }
+
+  /* heading: take full width so search sits cleanly under it */
+  .recent-downloads .card-header h3 {
+    width: 100%;
+    margin: 0;               /* remove extra margins so spacing is consistent */
+  }
+
+  /* ensure the search container fills the card width */
+  .recent-downloads .card-header .search-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: row;     /* keep icon + input in a row */
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* make the visible search box fill the card (override any earlier width rules) */
+  .recent-downloads .card-header .search-input-wrap {
+    display: flex !important;   /* keep icon and input inline */
+    width: 100% !important;     /* fill available card width */
+    max-width: 100% !important;
+    box-sizing: border-box;
+    margin-top: 0;              /* spacing handled by gap on parent */
+  }
+
+  /* input should expand to use remaining width */
+  .recent-downloads .card-header .search-input-wrap #downloadsSearch {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;               /* important for flex items on small screens */
+  }
+
+  /* clear button sits to the right of the input — keep small gap */
+  .recent-downloads .card-header .search-input-wrap #clearSearchBtn {
+    margin-left: 8px;
+    flex: 0 0 auto;
+  }
+
+  /* if earlier rules reduced brand logo etc., ensure card padding isn't too large */
+  .recent-downloads .card {
+    padding-left: 18px;
+    padding-right:18px;
+}
+}
+
