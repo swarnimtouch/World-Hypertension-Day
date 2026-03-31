@@ -8,6 +8,8 @@ use App\Models\Doctor;
 use App\Models\MslDoctor;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LoginExport;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -179,4 +181,29 @@ class AdminController extends Controller
                 $request->session()->forget('admin_logged_in');
                 return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
             }
+    public function delete($id)
+    {
+        $emp = Doctor::findOrFail($id);
+
+        if ($emp->banner_path) {
+
+            // ✅ URL ko S3 path me convert karo
+            $path = parse_url($emp->banner_path, PHP_URL_PATH);
+            $path = ltrim($path, '/'); // remove starting /
+
+            Log::info('Attempt delete', ['path' => $path]);
+
+            if (Storage::disk('s3')->exists($path)) {
+                Storage::disk('s3')->delete($path);
+
+                Log::info('Deleted from S3', ['path' => $path]);
+            } else {
+                Log::warning('File not found on S3', ['path' => $path]);
+            }
+        }
+
+        $emp->delete();
+
+        return back()->with('success', 'Deleted successfully');
+    }
 }

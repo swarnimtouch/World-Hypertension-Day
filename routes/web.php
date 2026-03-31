@@ -30,9 +30,9 @@ Route::post('/doctor/banner/preview', [DoctorController::class, 'preview'])->nam
 
 Route::get('/get-doctor-name', [DoctorController::class, 'getDoctorName'])->name('doctor.get_name');
 
-
  });
 
+Route::delete('doctor/delete/{id}', [AdminController::class, 'delete'])->name('doctor.delete');
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
