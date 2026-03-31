@@ -53,7 +53,7 @@
                             <td>
                                 <form action="{{ route('doctor.delete',$emp->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                     @csrf
-                                    @method('DELETE')
+                                       @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
