@@ -12,7 +12,7 @@ body {
   gap: 28px;
   padding: 28px;
   color: #222;
-  background: url("../images/bg.png") center/cover no-repeat;
+  background: url("../images/background.png") center/cover no-repeat fixed;
 }
 
 .topbar {
@@ -24,43 +24,136 @@ body {
 
 .topbar-inner {
   display: flex;
-  justify-content: space-between; /* left logo, center text, right logo */
+  justify-content: space-between; /* groups content to left and right */
   align-items: center;
-  padding: 0px 18px;
+  padding: 10px 18px; /* Thoda top-bottom padding diya align karne ke liye */
   border-radius: 10px;
-  background: #f0b4aa;
+  background: #A5D6B6;
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
+/* Logos Group (Left Side) */
+.logos-group {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between Hypertension logo and Sartel logo */
+}
+
 .brand-logo {
-  height: 120px;
+  height: 110px; /* Size badha di gayi hai */
   width: auto;
   border-radius: 6px;
+  display: block;
 }
 
 .brand1-logo {
-  height: 75px;
+  height: 85px; /* Size badha di gayi hai */
   width: auto;
   border-radius: 6px;
-  margin-left: auto;   /* 👈 push it to far right */
   display: block;
+}
+
+/* Profile Dropdown Group (Right Side) */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-toggle {
+  background: none;
+  border: none;
+  font-size: 38px;
+  color: #006E29; 
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.profile-toggle:hover {
+  color: #009639;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 2px; /* Gap kam karke lagbhag 0 kar diya taaki hover break na ho */
+  background: #fff;
+  min-width: 180px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+/* Show Dropdown when hovered or when 'show' class is added via JS */
+.profile-dropdown:hover .dropdown-menu,
+.dropdown-menu.show {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #F0F9F3;
+}
+
+.dropdown-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.dropdown-username {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #006E29;
+  word-break: break-word;
+  margin-top: 2px;
+}
+
+.dropdown-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dropdown-logout:hover {
+  background: #fff3f2;
+  color: #b71c1c;
 }
 
 .welcome h1 {
   font-size: 22px;
   font-weight: 600;
-  color: #BA131A;
+  color: #006E29;
 }
 
 .welcome .username {
-  color: #BA131A;
+  color: #006E29;
 }
 
 .subtitle {
   margin-top: 4px;
   font-size: 22px;
-  color: #e53935;
+  color: #009639;
   text-align: center;
 }
 
@@ -83,7 +176,7 @@ body {
   max-width: 1200px;
   /* allow big card inside page-wrap */
   margin: 0 auto;
-  background: #f0b4aa;
+  background: #A5D6B6;
   border-radius: 12px;
   padding: 28px 28px;
   /* larger padding */
@@ -94,7 +187,7 @@ body {
 .card-header h3 {
   margin: 0 0 12px;
   font-size: 16px;
-  color: #e53935;
+  color: #009639;
   font-weight: 600;
 }
 
@@ -107,8 +200,8 @@ body {
 }
 
 .day-card {
-  background: #fff8f7;
-  border: 2px solid #f0b4aa;
+ background: #F0F9F3;
+  border: 2px solid #A5D6B6;
   border-radius: 10px;
   min-height: 78px;
   display: flex;
@@ -126,8 +219,8 @@ body {
 
 .day-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(229, 57, 53, 0.18);
-  border-color: #f0b4aa;
+  box-shadow: 0 12px 24px rgba(0, 150, 57, 0.18);
+  border-color: #A5D6B6;
 }
 
 .day-card:active {
@@ -137,15 +230,15 @@ body {
 
 .day-card:focus {
   box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.15);
-  border-color: #e53935;
+  border-color: #009639;
 }
 
 .day-card.selected {
-  background: linear-gradient(135deg, #e53935, #d81b60);
+  background: linear-gradient(135deg, #009639, #007A2E);
   color: #fff;
   border: 2px solid rgba(0, 0, 0, 0.06);
   transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(216, 27, 96, 0.18);
+  box-shadow: 0 16px 40px rgba(0, 122, 46, 0.18);
 }
 
 .day-card .label {
@@ -156,7 +249,7 @@ body {
 .tooltip {
   position: absolute;
   z-index: 9999;
-  background: rgba(229, 57, 53, 0.95);
+  background: rgba(0, 150, 57, 0.95);
   color: #fff;
   padding: 8px 10px;
   border-radius: 8px;
@@ -212,7 +305,7 @@ body {
 
 .recent-downloads .card-header h3 {
   font-size: 16px;
-  color: #e53935;
+  color: #009639;
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -249,7 +342,7 @@ body {
 .downloads-table th {
   font-weight: 700;
   color: #444;
-  background: #fff8f7;
+  background: #F0F9F3;
 }
 
 .downloads-table tbody tr:hover {
@@ -257,7 +350,7 @@ body {
 }
 
 .download-link {
-  color: #e53935;
+  color: #009639;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.2s;
@@ -298,7 +391,7 @@ body {
 
 .view-all a {
   font-size: 13px;
-  color: #e53935;
+  color: #009639;
   text-decoration: none;
   font-weight: 500;
 }
@@ -361,27 +454,25 @@ body {
   /* add this so logout button positions relative to page container */
 }
 
-/* Logout button (same visual language as back-btn but positioned right-top outside shell) */
+/* LOGOUT BUTTON - Fixed Placement! 
+  Absolute aur negative positions hata diye hain.
+  Ab ye flex container ka part ban gaya hai.
+*/
 .logout-btn {
-  position: absolute;
-  top: 50px;
-  /* adjust vertical offset to sit near shell's top */
-  right: -120px;
-  /* adjust horizontal offset so it aligns with shell's right edge */
-  z-index: 30;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 12px;
-  border: 2px solid #f0b4aa;
-  background: #fff;
-  color: #e53935;
+  gap: 8px;
+  padding: 10px 18px;
+  margin-left: 15px; /* right logo se thoda space */
+  border-radius: 8px;
+  border: 2px solid #009639;
+  background: #009639;
+  color: #fff;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 150, 57, 0.15);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -391,32 +482,26 @@ body {
   line-height: 1;
 }
 
-/* hover: same effect as back-btn */
+/* hover */
 .logout-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  ;
-  background: linear-gradient(135deg, #D2AC67);
+  transform: translateY(-2px);
+  background: #007A2E;
+  border-color: #007A2E;
+  box-shadow: 0 6px 14px rgba(0, 122, 46, 0.25);
   color: #fff;
-  border-color: rgba(0, 0, 0, 0.06);
 }
 
 /* keyboard focus */
 .logout-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.06);
+  box-shadow: 0 0 0 4px rgba(0, 150, 57, 0.2);
 }
 
-/* responsive — on narrow screens move it inside flow (so it won't overlap) */
-@media (max-width: 720px) {
-  .logout-btn {
-    position: static;
-    display: inline-flex;
-    margin: 8px 110px 12px auto;
-    /* place above/back area on small screens */
-    float: right;
-
-  }
+/* Mobile wrap for logout button */
+.logout-wrapper {
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
 }
 
 /* Recent downloads header layout */
@@ -439,7 +524,7 @@ body {
   display: inline-flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #f0b4aa;
+  border: 2px solid #A5D6B6;
   /* theme border */
   border-radius: 10px;
   padding: 6px 10px;
@@ -450,7 +535,7 @@ body {
 .search-input-wrap .search-icon {
   font-size: 14px;
   margin-right: 8px;
-  color: #e53935;
+  color: #009639;
 }
 
 /* actual input */
@@ -475,7 +560,7 @@ body {
   cursor: pointer;
   padding: 4px;
   margin-left: 6px;
-  color: #e53935;
+  color: #009639;
   font-size: 14px;
   border-radius: 8px;
 }
@@ -549,7 +634,7 @@ body {
   border-radius: 8px;
   border: 2px solid transparent;
   background: #fff;
-  color: #e53935;
+  color: #009639;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
@@ -566,12 +651,12 @@ body {
 .pagination .page-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(229, 57, 53, 0.06);
-  background: linear-gradient(135deg, #ffe9e8, #fff);
+  background: linear-gradient(135deg, #F0F9F3, #fff);
 }
 
 /* current page */
 .pagination .page-btn.active {
-  background: linear-gradient(135deg, #e53935, #d81b60);
+  background: linear-gradient(135deg, #009639, #007A2E);
   color: #fff;
   border-color: rgba(0, 0, 0, 0.04);
 }
@@ -599,20 +684,22 @@ body {
     font-size: 12px;
     padding: 06px;
   }
-  @media (max-width: 720px) {
-  .brand-logo { height: 80px; }
-  .brand1-logo { height: 55px; }
+}
+
+@media (max-width: 720px) {
+  .brand-logo { height: 85px; } /* Mobile me thoda bada kiya */
+  .brand1-logo { height: 65px; } /* Mobile me thoda bada kiya */
   .welcome h1 { font-size: 18px; }
   .search-input-wrap{width: 80%;}
 }
 
 @media (max-width: 480px) {
-  .brand-logo { height: 60px; }
-  .brand1-logo { height: 45px; }
+  .brand-logo { height: 70px; } /* Choti screen par bhi thoda bada rakha */
+  .brand1-logo { height: 50px; } /* Choti screen par bhi thoda bada rakha */
   .welcome h1 { font-size: 16px; }
   .search-input-wrap{width: 70%;}
-
 }
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none;  /* Hide top button */
@@ -624,7 +711,6 @@ body {
   }
 }
 
-}
 #logoutBtnMobile {
   display: none !important;
 }
@@ -633,41 +719,27 @@ body {
   #logoutBtnMobile {
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 6px !important;
+    margin: 0 auto !important; /* Ensure it is perfectly centered */
   }
-}
-
-/* --- Mobile-only: move side-lines to background under topbar & cards --- */
-@media (max-width: 768px) {
-  /* Make side images non-interactive and behind page content */
-  .left-side-line,
-  .right-side-line {
-    z-index: 0 !important;       /* behind content (content will be z-index:1/2) */
-    pointer-events: none;        /* allow taps/clicks to pass through */
-    width: 60px;                 /* optionally reduce thickness on mobile */
-  }
-
-  /* Ensure key content sits above the side images */
+  
+  /* Ensure key content sits above the background */
   .topbar,
   .card,
   .recent-downloads,
   .topbar-inner,
   .page-wrap {
     position: relative;          /* create stacking context */
-    z-index: 2 !important;       /* sit above the side images */
+    z-index: 2 !important;       /* sit above the background */
   }
-
-  /* Mobile tweaks so lines don't overlap weirdly near edges */
-  .left-side-line { left: 0; top: 0; height: 100vh; }
-  .right-side-line { right: 0; top: 0; height: 100vh; }
 
   /* If your background image or body uses z-index contexts, make sure page container is above */
   body, .page-wrap {
     z-index: 1;
-    position:relative;}
-}
-/* ---------- Mobile: stack Recent Downloads heading + search under it ---------- */
-@media (max-width: 768px) {
+    position:relative;
+  }
+
   /* make the card-header stack vertically so heading is above search */
   .recent-downloads .card-header {
     flex-direction: column;
@@ -716,6 +788,5 @@ body {
   .recent-downloads .card {
     padding-left: 18px;
     padding-right:18px;
+  }
 }
-}
-

@@ -45,8 +45,8 @@
     }
 
     .day-box {
-      background: #fff8f7;
-      border: 2px solid #f0b4aa;
+      background: #F0F9F3; /* Very Light Green */
+      border: 2px solid #A5D6B6; /* Light Green Border */
       border-radius: 12px;
       min-height: 96px;
       /* increase height so numbers are centered nicely */
@@ -73,27 +73,26 @@
     }
 
     .day-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 24px rgba(229, 57, 53, 0.18);
-      border-color: #e53935;
+      box-shadow: 0 12px 24px rgba(0, 150, 57, 0.18); /* Green shadow */
+      border-color: #009639; /* Sartel Green */
     }
 
     .day-box:active {
       transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(229, 57, 53, 0.12);
+      box-shadow: 0 6px 14px rgba(0, 150, 57, 0.12);
     }
 
     .day-box:focus {
-      box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.15);
-      border-color: #e53935;
+      box-shadow: 0 0 0 4px rgba(0, 150, 57, 0.15);
+      border-color: #009639;
     }
 
     .day-box.selected {
-      background: linear-gradient(135deg, #e53935, #d81b60);
+      background: linear-gradient(135deg, #009639, #007A2E); /* Green Gradient */
       color: #fff;
       border: 2px solid rgba(0, 0, 0, 0.06);
       transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(216, 27, 96, 0.18);
+      box-shadow: 0 16px 40px rgba(0, 122, 46, 0.18);
     }
 
     /* inside label styling */
@@ -186,65 +185,38 @@
         max-width: 1100px;
       }
     }
-    .left-side-line {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;       /* full screen height */
-  width: 80px;         /* adjust to your line’s thickness */
-  z-index: 1;          /* stay behind topbar and content */
-}
-
-.left-side-line img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;   /* stretch nicely */
-}
-.right-side-line {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: 80px;
-  z-index: 1;
-}
-
-.right-side-line img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-
   </style>
-
 
 </head>
 
 <body>
-  <div class="left-side-line">
-  <img src="{{ asset('images/Left-Side.png') }}" alt="Left Line" />
-</div>
-<div class="right-side-line">
-  <img src="{{ asset('images/Right-Side.png') }}" alt="Right Line">
-</div>
-
+  
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-logo" />
+      <div class="logos-group">
+        <div class="brand">
+          <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo" class="brand-logo" />
+        </div>
+        <div class="brand1">
+          <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo" />
+        </div>
       </div>
-      <div class="welcome">
-        <h1>Welcome, <span class="username">{{ $employee->name ?? session('emp_code') }}</span></h1>
-      </div>
-      <div class="brand1">
-        <img src="{{ asset('images/LIPITAS-LOGO.png') }}" alt="Logo" class="brand1-logo" />
-      </div>
-      <button id="logoutBtn" class="logout-btn desktop-only" type="button" aria-label="Logout">
-        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-        Logout
-      </button>
 
+      <div class="profile-dropdown">
+        <button class="profile-toggle" type="button" aria-label="Profile Menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <i class="fa-solid fa-chevron-down" style="font-size: 16px; margin-left: 8px;"></i>
+        </button>
+        <div class="dropdown-menu">
+          <div class="dropdown-header">
+            <p>Welcome,</p>
+            <span class="dropdown-username">{{ $employee->name ?? session('emp_code') }}</span>
+          </div>
+          <button id="logoutBtn" class="dropdown-logout" type="button" aria-label="Logout">
+            <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -265,9 +237,6 @@
     @endfor
       </div>
 
-
-
-      <!-- Hidden input in doctor form -->
       <input type="hidden" id="selected_day" name="day">
 
     </section>
@@ -276,7 +245,6 @@
       <div class="card-header">
         <h3>Recent Downloads</h3>
 
-        <!-- Search (top-right inside card header) -->
         <div class="search-wrap">
           <label for="downloadsSearch" class="sr-only">Search Downloads</label>
           <div class="search-input-wrap">
@@ -286,7 +254,7 @@
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
-            
+            
         </div>
       </div>
       <div class="table-wrap">
@@ -319,22 +287,22 @@
         </table>
         <div class="table-footer">
           <div id="downloadsPagination" class="pagination" aria-label="Downloads pagination"></div>
-                  
+                  
         </div>
         <div class="view-all" style="margin-top: 10px; text-align: right;">
 
         </div>
       </div>
     </section>
+    
     <div class="mobile-only logout-wrapper">
-  <button id="logoutBtnMobile" class="logout-btn" type="button" aria-label="Logout">
-    <i class="fa-solid fa-right-from-bracket"></i> Logout
-  </button>
-</div>
+      <button id="logoutBtnMobile" class="logout-btn" type="button" aria-label="Logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
 
   </main>
 
-  <!-- Modal -->
   <div id="dayModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeDayModal">&times;</span>
@@ -343,7 +311,7 @@
 
       <h2 id="modalTitle" style="margin-top:20px;"></h2>
       <a id="doctorFormLink" href="#">
-        <button style="padding:10px 20px; cursor:pointer;margin-top:20px;">Continue</button>
+        <button style="padding:10px 20px; cursor:pointer;margin-top:20px; background-color: #009639; color: white; border: none; border-radius: 6px;">Continue</button>
       </a>
     </div>
   </div>
@@ -565,6 +533,23 @@
       const backBtn = document.getElementById('backBtn');
       const logoutBtn = document.getElementById('logoutBtn');
       const logoutBtnMobile = document.getElementById('logoutBtnMobile'); // 👈 new
+      
+      // Profile Dropdown Toggle Logic
+      const profileToggle = document.querySelector('.profile-toggle');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+
+      if (profileToggle && dropdownMenu) {
+        profileToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!profileToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('show');
+          }
+        });
+      }
 
       if (backBtn) {
         backBtn.addEventListener('click', function () {

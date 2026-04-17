@@ -68,8 +68,7 @@ class AdminController extends Controller
                 ->orWhere('hq_code', 'like', "%{$search}%");
         })
             ->orderBy('id', 'desc')
-            ->paginate(100)
-            ->withQueryString();
+            ->get();
 
         return view('admin.employees', compact('employees'));
     }
@@ -105,8 +104,7 @@ class AdminController extends Controller
                             });
                     })
                     ->orderBy('id', 'desc')
-                    ->paginate(500)
-                    ->withQueryString(); // ⭐ very important
+                    ->get();
 
 
                 return view('admin.banner', compact('employees'));
@@ -121,24 +119,61 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
-        $search = $request->search;
+        // Agar DataTables se AJAX request aati hai
+        if ($request->ajax()) {
+            $query = MslDoctor::with('user');
 
-        $employees = MslDoctor::with('user')
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")          // Doctor Name
-                ->orWhere('msl_code', 'like', "%{$search}%")   // MSL Code
-                ->orWhere('city', 'like', "%{$search}%")       // City
-                ->orWhere('degree', 'like', "%{$search}%")     // Specility
-                ->orWhere('employee_code', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");  // Employee Name
-                    });
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(500)
-            ->withQueryString(); // ⭐ pagination ke sath search preserve
+            // DataTables ka default search parameter
+            $searchValue = $request->input('search.value');
+            if ($searchValue) {
+                $query->where(function($q) use ($searchValue) {
+                    $q->where('name', 'like', "%{$searchValue}%")          
+                      ->orWhere('msl_code', 'like', "%{$searchValue}%")   
+                      ->orWhere('city', 'like', "%{$searchValue}%")       
+                      ->orWhere('degree', 'like', "%{$searchValue}%")     
+                      ->orWhere('employee_code', 'like', "%{$searchValue}%")
+                      ->orWhereHas('user', function ($subQ) use ($searchValue) {
+                          $subQ->where('name', 'like', "%{$searchValue}%");  
+                      });
+                });
+            }
 
-        return view('admin.doctors', compact('employees'));
+            $totalRecords = MslDoctor::count(); // Total records without filter
+            $filteredRecords = $query->count(); // Total records with filter
+
+            // Pagination from DataTables
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+
+            $employees = $query->orderBy('id', 'desc')
+                               ->offset($start)
+                               ->limit($length)
+                               ->get();
+
+            // Table rows ka design controller se hi banakar bhejenge
+            $data = [];
+            foreach ($employees as $index => $emp) {
+                $data[] = [
+                    'sr_no'         => $start + $index + 1,
+                    'emp_code'      => '<span class="badge-mono emp">' . $emp->employee_code . '</span>',
+                    'emp_name'      => '<span style="font-weight:500;">' . ($emp->user ? $emp->user->name : 'N/A') . '</span>',
+                    'doc_name'      => '<div class="doc-name-cell"><span class="doc-name-text">' . $emp->name . '</span></div>',
+                    'msl_code'      => $emp->msl_code,
+                    'city'          => $emp->city,
+                    'speciality'    => '<span class="badge-mono">' . $emp->degree . '</span>',
+                ];
+            }
+
+            return response()->json([
+                "draw"            => intval($request->input('draw')),
+                "recordsTotal"    => $totalRecords,
+                "recordsFiltered" => $filteredRecords,
+                "data"            => $data
+            ]);
+        }
+
+        // Jab page pehli baar load hoga toh sirf khali view bhejenge
+        return view('admin.doctors');
     }
 
 
@@ -162,7 +197,7 @@ class AdminController extends Controller
 
                 // Convert data to an array and return as JSON
                 return response()->json($doctors);
-            }
+            }   
             public function getAllBanners(Request $request)
             {
                 $banners = Doctor::with('user')->get()->map(function ($doctor) {
