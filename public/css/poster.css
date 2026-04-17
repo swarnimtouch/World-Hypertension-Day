@@ -1,11 +1,11 @@
 :root {
-  --accent1: #e53935;
-  --accent2: #d81b60;
-  --warm-bg: #fff8f7;
+  --accent1: #009639; /* Sartel Green */
+  --accent2: #007A2E; /* Dark Green Gradient */
+  --warm-bg: #F0F9F3; /* Light Green bg */
   --card: #ffffff;
   --muted: #6d7278;
   --text: #1f2933;
-  --border-warm: #f0b4aa;
+  --border-warm: #A5D6B6; /* Light Green Border */
   --radius: 16px;
   --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.15);
   --shadow-soft: 0 6px 14px rgba(0, 0, 0, 0.12);
@@ -22,11 +22,12 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text);
-background: url("../images/bg.png") center/cover no-repeat;
+  background: url("../images/background.png") center/cover no-repeat fixed;
   display: block;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .topbar {
   margin: 20px auto 0 auto;
   width: 100%;
@@ -38,49 +39,54 @@ background: url("../images/bg.png") center/cover no-repeat;
   display: flex;
   justify-content: space-between; /* left + middle + right */
   align-items: center;
-  padding: 0 18px;
+  padding: 10px 18px; /* Top/Bottom padding properly set */
   border-radius: 10px;
-  background: #f0b4aa;
+  background: #A5D6B6;
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Left logo */
+/* Left logo - Added Proper Constraints */
 .brand-logo {
-  height: 80px;
+  height: 100px;
+  max-height: 100px;
   width: auto;
   border-radius: 6px;
 }
 
-/* Right logo */
+/* Right logo - Added Proper Constraints */
 .brand1-logo {
-  height: 60px;
+  height: 85px;
+  max-height: 85px;
   width: auto;
   border-radius: 6px;
   object-fit: contain;
-  margin-left: auto;   /* 👈 pushes it to far right */
+  margin-left: auto;
   display: block;
 }
+
 .welcome h1 {
   font-size: 22px;
   font-weight: 600;
-  color: #BA131A;
+  color: #006E29;
 }
 
 .welcome .username {
-  color: #BA131A;
+  color: #006E29;
 }
 
 .subtitle {
   margin-top: 4px;
   font-size: 22px;
-  color: #e53935;
+  color: #009639;
   text-align: center;
 }
+
 .page {
   max-width: 1100px;
   margin: 36px auto;
   padding: 0 20px;
+  position: relative;
 }
 
 .title {
@@ -94,8 +100,7 @@ background: url("../images/bg.png") center/cover no-repeat;
 }
 
 .shell {
-background: #f0b4aa;
-
+  background: #A5D6B6;
   border-radius: var(--radius);
   box-shadow: var(--shadow-strong);
   padding: 20px;
@@ -121,8 +126,9 @@ background: #f0b4aa;
   transition: border-color 0.22s ease, transform 0.18s ease,
     box-shadow 0.18s ease;
 }
+
 .panel:hover {
-  border-color: rgba(229, 57, 53, 0.18);
+  border-color: rgba(0, 150, 57, 0.18);
   transform: translateY(-3px);
   box-shadow: var(--shadow-soft);
 }
@@ -133,6 +139,7 @@ background: #f0b4aa;
   font-size: 15px;
   color: var(--accent1);
 }
+
 .label {
   display: block;
   font-size: 12px;
@@ -150,7 +157,7 @@ background: #f0b4aa;
 input[type="text"],
 select {
   width: 100%;
-  border: 2px solid #f0b4aa;
+  border: 2px solid #A5D6B6;
   border-radius: 10px;
   padding: 12px 12px;
   background: #fff;
@@ -158,18 +165,21 @@ select {
   font-size: 14px;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
+
 input::placeholder {
-  color: #c98a7f;
+  color: #7ab893;
 }
+
 input:focus,
 select:focus {
   border-color: var(--accent1);
-  box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.06);
+  box-shadow: 0 0 0 6px rgba(0, 150, 57, 0.06);
 }
 
 .with-icon {
   position: relative;
 }
+
 .with-icon svg {
   position: absolute;
   right: 10px;
@@ -196,22 +206,25 @@ select:focus {
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
   color: #fff;
-  box-shadow: 0 6px 16px rgba(216, 27, 96, 0.14);
+  box-shadow: 0 6px 16px rgba(0, 122, 46, 0.14);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   display: inline-flex;
   align-items: center;
 }
+
 .btn i {
   margin-right: 8px;
   font-size: 16px;
   vertical-align: middle;
 }
+
 .btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(216, 27, 96, 0.16);
+  box-shadow: 0 10px 22px rgba(0, 122, 46, 0.16);
 }
+
 .btn.secondary {
   background: linear-gradient(135deg, #2a2a30, #3b3b45);
 }
@@ -227,8 +240,9 @@ select:focus {
   transition: border-color 0.22s ease, transform 0.18s ease;
   border: 2px solid transparent;
 }
+
 .preview-card:hover {
-  border-color: rgba(229, 57, 53, 0.14);
+  border-color: rgba(0, 150, 57, 0.14);
   transform: translateY(-3px);
 }
 
@@ -239,14 +253,15 @@ select:focus {
   gap: 14px;
   height: 100%;
 }
+
 .preview-wrap .step-title {
   margin-top: 0;
 }
 
 .poster-frame {
-  border: 2px dashed #e7c6c1;
+  border: 2px dashed #A5D6B6;
   border-radius: 14px;
-  background: linear-gradient(180deg, #fffaf9 0, #fff6f5 100%);
+  background: linear-gradient(180deg, #F0F9F3 0, #E6F3EA 100%);
   padding: 0;
   overflow: hidden;
   display: flex;
@@ -262,6 +277,7 @@ select:focus {
   display: flex;
   flex-direction: column;
 }
+
 .poster .bar {
   background: linear-gradient(135deg, var(--accent1), var(--accent2));
   color: #fff;
@@ -278,7 +294,6 @@ select:focus {
   justify-content: center;
   padding: 18px;
   gap: 10px;
-
   min-height: 0;
 }
 
@@ -306,7 +321,10 @@ select:focus {
     gap: 12px;
     padding: 10px;
   }
-     .brand1-logo {
+  .brand-logo {
+    height: 60px;
+  }
+  .brand1-logo {
     height: 45px;
   }
   .page {
@@ -338,20 +356,20 @@ select:focus {
     transform: scale(1);
   }
 }
-/* force full width so inline width (eg. style="width: 376px") doesn't break layout */
+
+/* Force full width for Select2 */
 .select2-container {
   width: 100% !important;
   font-family: inherit;
   box-sizing: border-box;
 }
 
-/* container for default single-selection Select2 */
 .select2-container--default .select2-selection--single {
-  height: auto;                 /* allow multi-line if needed */
-  min-height: 44px;             /* match native input height */
-  border: 2px solid #f0b4aa;    /* same warm border as other selects */
+  height: auto;
+  min-height: 44px;
+  border: 2px solid #A5D6B6;
   border-radius: 10px;
-  padding: 8px 36px 8px 12px;   /* space for arrow on right + left padding */
+  padding: 8px 36px 8px 12px;
   background: #fff;
   display: flex;
   align-items: center;
@@ -362,20 +380,17 @@ select:focus {
   box-sizing: border-box;
 }
 
-/* placeholder colour similar to input placeholder */
 .select2-container--default .select2-selection__placeholder {
-  color: #c98a7f;
+  color: #7ab893;
   opacity: 1;
 }
 
-/* selected/rendered text */
 .select2-container--default .select2-selection__rendered {
   line-height: 1;
   color: var(--muted);
   font-size: 14px;
 }
 
-/* arrow tweaks to match spacing */
 .select2-container--default .select2-selection__arrow {
   height: 100%;
   right: 10px;
@@ -385,14 +400,12 @@ select:focus {
   pointer-events: none;
 }
 
-/* when focused/open: same accent + soft shadow as other inputs */
 .select2-container--default.select2-container--open .select2-selection--single,
 .select2-container--default .select2-selection--single:focus {
   border-color: var(--accent1);
-  box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.06);
+  box-shadow: 0 0 0 6px rgba(0, 150, 57, 0.06);
 }
 
-/* dropdown list (when opened) — subtle border radius & matching bg */
 .select2-dropdown {
   border-radius: 10px;
   border: 1px solid rgba(0,0,0,0.08);
@@ -400,260 +413,77 @@ select:focus {
   overflow: hidden;
 }
 
-/* ensure the inner search input (if used) matches style */
 .select2-container--default .select2-search--dropdown .select2-search__field {
-  border: 1px solid #e53935;
+  border: 1px solid #009639;
   outline: none;
   font-family: inherit;
   font-size: 14px;
   padding: 8px 10px;
 }
-.logout-btn {
-  position: absolute;
-  top: 50px;
-  /* adjust vertical offset to sit near shell's top */
-  right: -105px;
-  /* adjust horizontal offset so it aligns with shell's right edge */
-  z-index: 30;
-  display: inline-flex;
+
+
+/* ---------- NEW BOTTOM BUTTONS CONTAINER ---------- */
+.bottom-buttons {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 12px;
-  border: 2px solid #f0b4aa;
-  background: #fff;
-  color: #e53935;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
-  -webkit-tap-highlight-color: transparent;
+  gap: 16px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-/* icon */
-.logout-btn i {
-  font-size: 15px;
-  line-height: 1;
-}
-
-/* hover: same effect as back-btn */
-.logout-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  ;
-  background: linear-gradient(135deg, #D2AC67);
-  color: #fff;
-  border-color: rgba(0, 0, 0, 0.06);
-}
-
-/* keyboard focus */
-.logout-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 6px rgba(229, 57, 53, 0.06);
-}
-/* responsive tweaks: keep it consistent on narrow screens */
-@media (max-width: 720px) {
-  .select2-container--default .select2-selection--single {
-    min-height: 40px;
-    padding-right:34px;
-}
+/* Button Base Styles (Both Back & Logout) */
+.back-btn,
 .logout-btn {
-    position: static;
-    display: inline-flex;
-    margin: 8px 0 12px auto;
-    /* place above/back area on small screens */
-    float: right;
-  }
-}
-/* Back button wrapper (center below shell) */
-.back-wrap {
-  text-align: center;
-  margin: 18px 0 36px; /* upar thoda gap, niche thoda zyada gap for breathing room */
-}
-
-
-/* Back button style (matches theme: warm border, radius, subtle hover -> gradient like primary) */
-.back-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 10px 24px;
   border-radius: 12px;
-  border: 2px solid var(--border-warm);
+  border: 2px solid #009639; /* Sartel Green Border */
   background: #fff;
-  color: var(--accent1);
+  color: #009639; /* Sartel Green Text */
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 150, 57, 0.08);
   -webkit-tap-highlight-color: transparent;
 }
 
-
-/* Icon size */
-.back-btn i {
-  font-size: 15px;
-  line-height: 1;
-}
-
-/* Hover: use primary gradient and white text to match main CTA feel */
-.back-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-soft);
-  background: linear-gradient(135deg, #D2AC67);
-  color: #fff;
-  border-color: rgba(0,0,0,0.06);
-}
-
-/* Focus (keyboard accessibility) */
-.back-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 6px rgba(229,57,53,0.06);
-}
-
-/* Responsive: keep button comfortable on small screens */
-@media (max-width: 480px) {
-  .back-btn { padding: 10px 14px; font-size: 13px; gap: 8px; }
-}
-
-/* ensure parent for absolute positioning */
-.page {
-  position: relative; /* add this so logout button positions relative to page container */
-}
-
-/* Logout button (same visual language as back-btn but positioned right-top outside shell) */
-.logout-btn {
-  position: absolute;
-  top: -140px;                /* adjust vertical offset to sit near shell's top */
-  z-index: 30;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 12px;
-  border: 2px solid var(--border-warm);
-  background: #fff;
-  color: var(--accent1);
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* icon */
+.back-btn i,
 .logout-btn i {
   font-size: 15px;
   line-height: 1;
 }
 
-/* hover: same effect as back-btn */
+/* Hover States for Buttons */
+.back-btn:hover,
 .logout-btn:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-soft);
-  background: linear-gradient(135deg,#D2AC67);
+  box-shadow: 0 6px 14px rgba(0, 122, 46, 0.18);
+  background: linear-gradient(135deg, #009639, #007A2E);
   color: #fff;
-  border-color: rgba(0,0,0,0.06);
+  border-color: #007A2E;
 }
 
-/* keyboard focus */
+/* Focus States */
+.back-btn:focus,
 .logout-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 6px rgba(229,57,53,0.06);
+  box-shadow: 0 0 0 6px rgba(0, 150, 57, 0.15);
 }
 
-/* responsive — on narrow screens move it inside flow (so it won't overlap) */
-@media (max-width: 720px) {
-  .logout-btn {
-    position: static;
-    display: inline-flex;
-    margin: 8px 0 12px auto; /* place above/back area on small screens */
-    float:right;
-}
-@media (max-width: 720px) {
-  /* Hide desktop positions */
-  .back-wrap { display: none; }
-  .logout-btn { position: static; margin: 0; float: none; }
-
-  /* Bottom container */
-  .bottom-buttons {
-    display: flex;
-    justify-content: center;   /* center in row */
-    align-items: center;
-    gap: 12px;                 /* space between buttons */
-    margin-top: 15px;
-  }
-
-  .bottom-buttons .back-btn,
-  .bottom-buttons .logout-btn {
-    flex: 0 0 auto;            /* auto-size, no forced width */
-    padding: 10px 16px;
-    font-size: 14px;
-  }
-}
-
-/* On very small screens (stack vertically) */
+/* Responsive bottom buttons */
 @media (max-width: 480px) {
   .bottom-buttons {
-    flex-direction: column;   /* stack vertically */
-    align-items: stretch;     /* take full width */
-    gap: 10px;
+    flex-direction: column;
+    gap: 12px;
   }
-
-  .bottom-buttons .back-btn,
-  .bottom-buttons .logout-btn {
-    width: 31%;
-    margin-left: 32%;          /* full width each */
+  .back-btn,
+  .logout-btn {
+    width: 100%;
   }
-}
-@media (min-width: 769px) {
-  #backBtn {
-    display: block;        /* makes margin auto work */
-    margin: 20px auto;     /* centers horizontally */
-    text-align: center;    /* centers icon + text inside */
-  }
-}
-}
-/* --- ADD THIS at the END of your existing <style> block --- */
-@media (max-width: 768px) {
-  /* side images go behind everything and become non-interactive */
-  .left-side-line,
-  .right-side-line {
-    z-index: 0 !important;         /* behind page content */
-    pointer-events: none !important;/* allow taps to pass through */
-    width: 60px !important;        /* slightly thinner on mobile (optional) */
-    top: 0;
-    height: 100vh;
-  }
-
-  /* make sure the images themselves don't accidentally cover content */
-  .left-side-line img,
-  .right-side-line img {
-    display: block;
-    max-width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.98;                 /* optional: slightly dim if needed */
-  }
-
-  /* ensure login container and its children sit above the lines */
-  .login-container,
-  .login-container * ,
-  .logo,
-  form,
-  .login-btn,
-  input {
-    position: relative !important;
-    z-index: 2 !important;         /* bring all main UI above side images */
-  }
-
-  /* make sure body has a normal stacking context */
-  body {
-    position: relative;
-    z-index:1;
-}
 }

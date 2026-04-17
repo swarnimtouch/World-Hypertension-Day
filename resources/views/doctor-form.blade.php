@@ -16,51 +16,17 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{asset('css/poster.css')}}" />
-    <style>
-        .left-side-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 80px;
-            z-index: 1;
-        }
-        .left-side-line img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-        .right-side-line {
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100vh;
-            width: 80px;
-            z-index: 1;
-        }
-        .right-side-line img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-    </style>
 </head>
 <body>
-<div class="left-side-line">
-    <img src="{{ asset('images/Left-Side.png') }}" alt="Left Line" />
-</div>
-<div class="right-side-line">
-    <img src="{{ asset('images/Right-Side.png') }}" alt="Right Line">
-</div>
 
 <header class="topbar">
     <div class="topbar-inner">
         <div class="brand">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="brand-logo" />
+            <img src="{{asset('images/hypertension day logo.jpg')}}" alt="Hypertension Day Logo" class="brand-logo" />
         </div>
         <div class="welcome"></div>
         <div class="brand1">
-            <img src="{{ asset('images/LIPITAS-LOGO.png') }}" alt="Logo" class="brand1-logo" />
+            <img src="{{asset('images/sartel.jpg')}}" alt="Sartel Logo" class="brand1-logo" />
         </div>
     </div>
 </header>
@@ -96,7 +62,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        {{-- FIX: Removed duplicate id="day" hidden input. Use id="hidden_day" --}}
                         <input type="hidden" id="hidden_day" name="day">
                     </div>
                     <label class="label mt-2">Doctor Name</label>
@@ -175,8 +140,6 @@
 </script>
 
 <script nonce="{{ $cspNonce }}">
-    // Paste this entire <script> block replacing your existing one
-
     $(document).ready(function () {
 
         $('#doctor_name').select2({

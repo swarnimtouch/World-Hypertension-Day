@@ -1,46 +1,47 @@
 @extends('admin.layout')
 
 @section('content')
-  <div class="app">
+    <div class="page-header">
+        <div class="page-title-group">
+            <h4><i class="fas fa-chart-line"></i> Dashboard</h4>
+            <p>Overview of World Hypertension Day</p>
+        </div>
+    </div>
 
-
-    <main class="main-content">
-      <!-- Dashboard view -->
-      <section id="dashboard">
-        <h1><i class="fas fa-users"></i> Total User</h1>
-        <div class="summary-cards">
-          <div class="summary-card">
-            <div class="summary-text">
-              <span>Total Employees</span>
-              <h2 id="totalEmployeesCount">{{$totalEmployees}}</h2>
+    <div class="row g-3 mb-4">
+        
+        <!-- Total Employees Card -->
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="stat-card blue">
+                <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+                <div>
+                    <div class="stat-label">Total Employees</div>
+                    <div class="stat-value">{{ $totalEmployees }}</div>
+                </div>
             </div>
-            <div class="summary-icon">
-              <i class="fas fa-user-check"></i>
-            </div>
-          </div>
-          <div class="summary-card">
-            <div class="summary-text">
-              <span>Total Doctors</span>
-              <h2 id="totalEmployeesCount">{{$totalDoctors}}</h2>
-            </div>
-            <div class="summary-icon">
-              <i class="fas fa-user-md"></i>
-            </div>
-          </div>
-          <div class="summary-card">
-            <div class="summary-text">
-              <span>Total Banner</span>
-              <h2 id="totalEmployeesCount">{{$totalDoctors1}}</h2>
-            </div>
-            <div class="summary-icon">
-              <i class="fas fa-user-check"></i>
-            </div>
-          </div>
         </div>
 
-      </section>
-    </main>
-  </div>
- @endsection
+        <!-- Total Doctors Card -->
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="stat-card blue">
+                <div class="stat-icon blue"><i class="fas fa-user-md"></i></div>
+                <div>
+                    <div class="stat-label">Total Doctors</div>
+                    <div class="stat-value">{{ $totalDoctors }}</div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Total Banners Card -->
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="stat-card blue">
+                <div class="stat-icon blue"><i class="fas fa-image"></i></div>
+                <div>
+                    <div class="stat-label">Total Banners</div>
+                    <div class="stat-value">{{ $totalDoctors1 }}</div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+@endsection

@@ -13,66 +13,32 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <style>
-      .left-side-line {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;       /* full screen height */
-  width: 80px;         /* adjust to your line’s thickness */
-  z-index: 1;          /* stay behind topbar and content */
-}
-
-.left-side-line img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;   /* stretch nicely */
-}
-.right-side-line {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: 80px;
-  z-index: 1;
-}
-
-.right-side-line img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-      </style>
-
+    
     <link rel="stylesheet" href="{{asset('css/login.css')}}" />
   </head>
   <body>
-      <div class="left-side-line">
-  <img src="{{ asset('images/Left-Side.png') }}" alt="Left Line" />
-</div>
-<div class="right-side-line">
-  <img src="{{ asset('images/Right-Side.png') }}" alt="Right Line">
-</div>
+      
     <div class="login-container">
-      <div class="logo">
-        <img src="{{asset('images/logo.png')}}" alt="Logo (place logo.png in same folder)" />
+      <div class="top-logo">
+        <img src="{{asset('images/hypertension day logo.jpg')}}" alt="Hypertension Day Logo" />
       </div>
-@if ($errors->any())
-    <div class="alert alert-danger mb-3">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger mb-3">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
       <h2>Login</h2>
-      <form action="{{ route('login.submit') }}" method="POST">
+      <form id="loginForm" action="{{ route('login.submit') }}" method="POST">
         @csrf
         <div class="input-group">
           <i class="fa-solid fa-envelope left-icon" aria-hidden="true"></i>
-         <input type="text" name="emp_code" placeholder="Enter Employee Code" autocomplete="username" required>
+          <input type="text" name="emp_code" placeholder="Enter Employee Code" autocomplete="username">
         </div>
 
         <div class="input-group">
@@ -81,6 +47,7 @@
           <input
             type="password"
             name="password"
+            id="password"
             placeholder="Password"
             autocomplete="current-password"
           />
@@ -96,11 +63,14 @@
         </div>
         <button class="login-btn" type="submit">Login</button>
       </form>
-      <div class="logo">
-        <img src="{{asset('images/LIPITAS-LOGO.png')}}" alt="Logo (place logo.png in same folder)" style="margin-top:7px;"/>
+
+      <div class="bottom-logo">
+        <img src="{{asset('images/sartel.jpg')}}" alt="Sartel Logo" />
       </div>
     </div>
 
-    {{-- <script src="{{asset('js/login.js')}}"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="{{asset('js/login.js')}}"></script>
   </body>
 </html>
