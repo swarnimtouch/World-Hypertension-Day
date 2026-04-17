@@ -208,7 +208,7 @@ class DoctorController extends Controller
             'public'
         );
 
-        return Storage::disk('s3')->url($s3Path);
+        return Storage::disk('s3')->url('World-Hypertension-Day/' . $s3Path);
     }
 
     // =========================================================================
