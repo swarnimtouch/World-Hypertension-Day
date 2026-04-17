@@ -26,7 +26,7 @@
     <div class="card login-card">
         <div class="card-header bg-transparent px-4 pt-4 pb-0 text-center">
             <!-- Logo Section added as per requirement -->
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo mb-2" onerror="this.style.display='none'">
+            <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Logo" class="logo mb-2" onerror="this.style.display='none'">
             <h2 class="login-title">ADMIN LOGIN</h2>
         </div>
 
