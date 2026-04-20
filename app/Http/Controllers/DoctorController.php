@@ -14,15 +14,15 @@ use Intervention\Image\Drivers\Gd\Driver;
 class DoctorController extends Controller
 {
     private $dayMessages = [
-        1  => "Celebrate Day 1 with gratitude and joy!",
-        2  => "Day 2 – Keep your heart healthy with exercise.",
-        3  => "Day 3 – Stay hydrated, drink water often.",
-        4  => "Day 4 – Eat fresh fruits and vegetables.",
-        5  => "Day 5 – Spend time with loved ones.",
-        6  => "Day 6 – Practice mindfulness & meditation.",
-        7  => "Day 7 – A strong heart needs quality sleep.",
-        8  => "Day 8 – Take a walk and breathe fresh air.",
-        9  => "Day 9 – Laugh more, stress less!",
+        1 => "Celebrate Day 1 with gratitude and joy!",
+        2 => "Day 2 – Keep your heart healthy with exercise.",
+        3 => "Day 3 – Stay hydrated, drink water often.",
+        4 => "Day 4 – Eat fresh fruits and vegetables.",
+        5 => "Day 5 – Spend time with loved ones.",
+        6 => "Day 6 – Practice mindfulness & meditation.",
+        7 => "Day 7 – A strong heart needs quality sleep.",
+        8 => "Day 8 – Take a walk and breathe fresh air.",
+        9 => "Day 9 – Laugh more, stress less!",
         10 => "Day 10 – Spread kindness everywhere.",
         11 => "Day 11 – Avoid junk food for a healthy you.",
         12 => "Day 12 – Challenge yourself with fitness.",
@@ -44,6 +44,7 @@ class DoctorController extends Controller
         28 => "Day 28 – Focus on gratitude and peace.",
         29 => "Day 29 – Inspire others with your actions.",
         30 => "Day 30 – Celebrate health, celebrate life!",
+        31 => "Celebrate Day 1 with gratitude and joy!",
     ];
 
     // =========================================================================
@@ -51,7 +52,7 @@ class DoctorController extends Controller
     // =========================================================================
     public function create($day)
     {
-        $user    = Auth::user();
+        $user = Auth::user();
         $empCode = $user->emp_code;
         $doctors = MslDoctor::where('employee_code', $empCode)->get();
 
@@ -64,12 +65,12 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'day'        => 'required|integer',
-            'name'       => 'required|string|max:255',
+            'day' => 'required|integer',
+            'name' => 'required|string|max:255',
             'speciality' => 'required|string|max:255',
-            'hospital'   => 'nullable|string',
-            'city'       => 'nullable|string',
-            'country'    => 'nullable|string',
+            'hospital' => 'nullable|string',
+            'city' => 'nullable|string',
+            'country' => 'nullable|string',
         ]);
 
         $bannerPath = $this->createBanner($request->day, $request->name);
@@ -79,12 +80,12 @@ class DoctorController extends Controller
         }
 
         Doctor::create([
-            'day'         => $request->day,
-            'name'        => $request->name,
-            'speciality'  => $request->speciality,
-            'hospital'    => $request->hospital,
-            'city'        => $request->city,
-            'country'     => $request->country,
+            'day' => $request->day,
+            'name' => $request->name,
+            'speciality' => $request->speciality,
+            'hospital' => $request->hospital,
+            'city' => $request->city,
+            'country' => $request->country,
             'banner_path' => str_replace(public_path(), '', $bannerPath),
         ]);
 
@@ -97,17 +98,17 @@ class DoctorController extends Controller
     private function buildImage($day, $doctorName, $language = 'english')
     {
         $bannerMap = [
-            'english'   => "banners/day{$day}.jpg",
+            'english' => "banners/day{$day}.jpg",
             'malayalam' => "banners/malayalam_day{$day}.jpg",
-            'kannada'   => "banners/World Heart Day Poster_Kannada_page-00{$day}.jpg",
-            'tamil'     => "banners/tamil_day{$day}.jpg",
-            'odia'      => "banners/oriya_day{$day}.jpg",
-            'punjabi'   => "banners/Punjabi_day{$day}.jpg",
-            'telugu'    => "banners/Telugu_day{$day}.jpg",
-            'bengali'   => "banners/Bengali_day{$day}.jpg",
-            'gujarati'  => "banners/Gujarati_day{$day}.jpg",
-            'hindi'     => "banners/hindi_day{$day}.jpg",
-            'marathi'   => "banners/marathi_day{$day}.jpg",
+            'kannada' => "banners/World Heart Day Poster_Kannada_page-00{$day}.jpg",
+            'tamil' => "banners/tamil_day{$day}.jpg",
+            'odia' => "banners/oriya_day{$day}.jpg",
+            'punjabi' => "banners/Punjabi_day{$day}.jpg",
+            'telugu' => "banners/Telugu_day{$day}.jpg",
+            'bengali' => "banners/Bengali_day{$day}.jpg",
+            'gujarati' => "banners/Gujarati_day{$day}.jpg",
+            'hindi' => "banners/hindi_day{$day}.jpg",
+            'marathi' => "banners/marathi_day{$day}.jpg",
         ];
 
         if (!isset($bannerMap[$language])) return null;
@@ -117,24 +118,24 @@ class DoctorController extends Controller
 
         $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : '';
 
-        $x            = 0;
-        $y            = 1680;
+        $x = 0;
+        $y = 1680;
         $textBoxWidth = 1080;
-        $color        = '#ba131a';
+        $color = '#ba131a';
 
         if ($language === 'malayalam') {
-            $y            = 3366;
+            $y = 3366;
             $textBoxWidth = 2160;
         } elseif (in_array($language, ['tamil', 'kannada'])) {
-            $y            = 1690;
+            $y = 1690;
             $textBoxWidth = 1084;
         } elseif ($language === 'english') {
-            $y            = 5024;
+            $y = 5024;
             $textBoxWidth = 3240;
         }
 
         $manager = new ImageManager(new Driver());
-        $img     = $manager->read($bannerPath);
+        $img = $manager->read($bannerPath);
 
         if (!empty($safeDoctorName)) {
             $img->text(
@@ -181,8 +182,8 @@ class DoctorController extends Controller
 
         // Session-based filename so multiple users don't clash
         $sessionId = session()->getId();
-        $fileName  = "preview_{$sessionId}_day{$day}_{$language}.jpg";
-        $filePath  = $tempDir . '/' . $fileName;
+        $fileName = "preview_{$sessionId}_day{$day}_{$language}.jpg";
+        $filePath = $tempDir . '/' . $fileName;
 
         $img->toJpeg(80)->save($filePath);
 
@@ -199,8 +200,8 @@ class DoctorController extends Controller
         if (!$img) return null;
 
         $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : 'no_doctor';
-        $fileName       = "day{$day}_{$safeDoctorName}_{$language}.jpg";
-        $s3Path         = "generated/{$fileName}";
+        $fileName = "day{$day}_{$safeDoctorName}_{$language}.jpg";
+        $s3Path = "generated/{$fileName}";
 
         Storage::disk('s3')->put(
             'World-Hypertension-Day/' . $s3Path,
@@ -219,15 +220,15 @@ class DoctorController extends Controller
     public function preview1(Request $request)
     {
         $request->validate([
-            'day'         => 'required|integer',
+            'day' => 'required|integer',
             'doctor_name' => 'nullable|string|max:255',
-            'degree'      => 'nullable|string|max:255',
-            'language'    => 'nullable|string|max:50',
+            'degree' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:50',
         ]);
 
-        $day        = $request->day;
+        $day = $request->day;
         $doctorName = $request->doctor_name ?? '';
-        $language   = $request->language ?? 'english';
+        $language = $request->language ?? 'english';
 
         // Local temp only — nothing on S3 or DB
         $previewUrl = $this->createBannerTemp($day, $doctorName, $language);
@@ -247,20 +248,20 @@ class DoctorController extends Controller
     public function preview(Request $request)
     {
         $request->validate([
-            'day'         => 'required|integer',
+            'day' => 'required|integer',
             'doctor_name' => 'nullable|string|max:255',
-            'degree'      => 'nullable|string|max:255',
-            'language'    => 'nullable|string|max:50',
-            'hospital'    => 'nullable|string',
-            'city'        => 'nullable|string',
-            'country'     => 'nullable|string',
-            'doctor_id'   => 'nullable|integer',
+            'degree' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:50',
+            'hospital' => 'nullable|string',
+            'city' => 'nullable|string',
+            'country' => 'nullable|string',
+            'doctor_id' => 'nullable|integer',
         ]);
 
-        $day        = $request->day;
+        $day = $request->day;
         $doctorName = $request->doctor_name ?? '';
-        $degree     = $request->degree;
-        $language   = $request->language ?? 'english';
+        $degree = $request->degree;
+        $language = $request->language ?? 'english';
 
         // S3 upload — only on button click
         $outputPath = $this->createBanner($day, $doctorName, $language);
@@ -269,7 +270,7 @@ class DoctorController extends Controller
             return response()->json(['error' => 'Banner not found for Day ' . $day], 404);
         }
 
-        $userId      = Auth::id();
+        $userId = Auth::id();
         $userEmpCode = Auth::user()->emp_code;
 
         // Update MslDoctor name/degree if doctor_id given
@@ -278,7 +279,7 @@ class DoctorController extends Controller
                 ->where('employee_code', $userEmpCode)
                 ->first();
             if ($mslDoctor) {
-                $mslDoctor->name   = $doctorName;
+                $mslDoctor->name = $doctorName;
                 $mslDoctor->degree = $degree;
                 $mslDoctor->save();
             }
@@ -286,14 +287,14 @@ class DoctorController extends Controller
 
         // DB store — only on button click
         Doctor::create([
-            'user_id'     => $userId,
-            'name'        => $doctorName,
-            'day'         => $day,
-            'degree'      => $degree,
-            'language'    => $language,
-            'hospital'    => $request->hospital,
-            'city'        => $request->city,
-            'country'     => $request->country,
+            'user_id' => $userId,
+            'name' => $doctorName,
+            'day' => $day,
+            'degree' => $degree,
+            'language' => $language,
+            'hospital' => $request->hospital,
+            'city' => $request->city,
+            'country' => $request->country,
             'banner_path' => $outputPath,
         ]);
 
@@ -306,7 +307,7 @@ class DoctorController extends Controller
     public function generate(Request $request)
     {
         $request->validate([
-            'day'         => 'required|integer',
+            'day' => 'required|integer',
             'doctor_name' => 'required|string|max:255',
         ]);
 
@@ -325,12 +326,12 @@ class DoctorController extends Controller
     public function download(Request $request)
     {
         $request->validate([
-            'day'         => 'required|integer',
+            'day' => 'required|integer',
             'doctor_name' => 'required|string|max:255',
-            'speciality'  => 'nullable|string|max:255',
-            'hospital'    => 'nullable|string',
-            'city'        => 'nullable|string',
-            'country'     => 'nullable|string',
+            'speciality' => 'nullable|string|max:255',
+            'hospital' => 'nullable|string',
+            'city' => 'nullable|string',
+            'country' => 'nullable|string',
         ]);
 
         $outputPath = $this->createBanner($request->day, $request->doctor_name);
@@ -342,10 +343,10 @@ class DoctorController extends Controller
         Doctor::updateOrCreate(
             ['name' => $request->doctor_name, 'day' => $request->day],
             [
-                'speciality'  => $request->speciality ?? 'General Physician',
-                'hospital'    => $request->hospital,
-                'city'        => $request->city,
-                'country'     => $request->country,
+                'speciality' => $request->speciality ?? 'General Physician',
+                'hospital' => $request->hospital,
+                'city' => $request->city,
+                'country' => $request->country,
                 'banner_path' => str_replace(public_path(), '', $outputPath),
             ]
         );
@@ -375,7 +376,7 @@ class DoctorController extends Controller
 
         return response()->json([
             'doctor_name' => $doctor->name,
-            'degree'      => $doctor->degree ?? ''
+            'degree' => $doctor->degree ?? ''
         ]);
     }
 }
