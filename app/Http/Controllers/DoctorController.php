@@ -215,11 +215,7 @@ class DoctorController extends Controller
         return Storage::disk('s3')->url('World-Hypertension-Day/' . $s3Path);
     }
 
-    // =========================================================================
-    // preview1 — PREVIEW ONLY
-    // Called on: day change, language change, doctor select, name edit
-    // NO S3 upload, NO DB store, NO download
-    // =========================================================================
+    
     public function preview1(Request $request)
     {
         $request->validate([
