@@ -101,13 +101,31 @@
 <body>
 
 <header class="topbar">
-    <div class="topbar-inner">
-        <div class="brand">
-            <img src="{{asset('images/hypertension day logo.jpg')}}" alt="Hypertension Day Logo" class="brand-logo"/>
-        </div>
-        <div class="welcome"></div>
+  <div class="topbar-inner">
+    
         <div class="brand1">
-            <img src="{{asset('images/sartel.jpg')}}" alt="Sartel Logo" class="brand1-logo"/>
+      <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
+    </div>
+
+        <div class="brand">
+      <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
+        class="brand-logo"/>
+    </div>
+
+        <div class="profile-dropdown">
+            <button class="profile-toggle" type="button" aria-label="Profile Menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <i class="fa-solid fa-chevron-down" style="font-size: 16px; margin-left: 8px;"></i>
+            </button>
+            <div class="dropdown-menu">
+                <div class="dropdown-header">
+                    <p>Welcome,</p>
+                    <span class="dropdown-username">{{ $employee->name ?? session('emp_code') }}</span>
+                </div>
+                <button id="logoutBtn" class="dropdown-logout" type="button" aria-label="Logout">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
+                </button>
+            </div>
         </div>
     </div>
 </header>

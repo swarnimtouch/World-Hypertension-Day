@@ -15,9 +15,8 @@ class DashboardController extends Controller
         // Get the authenticated user directly from Auth
         $user = Auth::user();
         // Get user's recent posters
-        $recentPosters = Doctor::where('user_id', $user->id)
+       $recentPosters = Doctor::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->take(10)
             ->get();
 
         return view('dashboard', [

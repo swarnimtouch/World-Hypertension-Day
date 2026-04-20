@@ -192,16 +192,16 @@
 <body>
 
 <header class="topbar">
-    <div class="topbar-inner">
-        <div class="logos-group">
-            <div class="brand">
-                <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
-                     class="brand-logo"/>
-            </div>
-            <div class="brand1">
-                <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
-            </div>
-        </div>
+  <div class="topbar-inner">
+    
+        <div class="brand1">
+      <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
+    </div>
+
+        <div class="brand">
+      <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
+        class="brand-logo"/>
+    </div>
 
         <div class="profile-dropdown">
             <button class="profile-toggle" type="button" aria-label="Profile Menu">
@@ -226,7 +226,7 @@
 <main class="page-wrap">
     <section class="card">
         <div class="card-header">
-            <h3>30-Day Calendar</h3>
+            <h3>31-Day Calendar</h3>
         </div>
         <div class="days-grid" id="daysGrid" role="list">
             @for($i = 1; $i <= 31; $i++)
@@ -328,7 +328,7 @@
 <script nonce="{{ $cspNonce }}">
     (function () {
         // CONFIG
-        const pageSize = 10; // change this to show more/less rows per page
+        const pageSize = 5; // change this to show more/less rows per page
 
         // UTIL
         function debounce(fn, wait) {

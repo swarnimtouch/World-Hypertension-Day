@@ -23,21 +23,21 @@ body {
 }
 
 .topbar-inner {
-  display: flex;
-  justify-content: space-between; /* groups content to left and right */
-  align-items: center;
-  padding: 10px 18px; /* Thoda top-bottom padding diya align karne ke liye */
-  border-radius: 10px;
-  background: #A5D6B6;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+ display: flex;
+ justify-content: space-between; 
+ align-items: center;
+ padding: 10px 18px; 
+ border-radius: 10px;
+ background: #A5D6B6;
+ backdrop-filter: blur(6px);
+ box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+ position: relative; /* NAYA ADD KIYA: Center wale logo ko absolute position track karne ke liye */
 }
 
-/* Logos Group (Left Side) */
-.logos-group {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* Space between Hypertension logo and Sartel logo */
+.brand {
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%);
 }
 
 .brand-logo {
