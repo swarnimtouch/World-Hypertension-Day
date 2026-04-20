@@ -116,7 +116,8 @@ class DoctorController extends Controller
         $bannerPath = public_path($bannerMap[$language]);
         if (!file_exists($bannerPath)) return null;
 
-        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : '';
+//        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : '';
+        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : '';
 
         $x = 0;
         $y = 1680;
@@ -199,7 +200,9 @@ class DoctorController extends Controller
         $img = $this->buildImage($day, $doctorName, $language);
         if (!$img) return null;
 
-        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : 'no_doctor';
+//        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : 'no_doctor';
+        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : 'no_doctor';
+
         $fileName = "day{$day}_{$safeDoctorName}_{$language}.jpg";
         $s3Path = "generated/{$fileName}";
 
