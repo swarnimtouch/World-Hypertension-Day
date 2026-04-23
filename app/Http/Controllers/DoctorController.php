@@ -98,7 +98,7 @@ class DoctorController extends Controller
     private function buildImage($day, $doctorName, $language = 'english')
     {
         $bannerMap = [
-            'english' => "banners/day{$day}.jpg",
+            'english' => "banners/World Hypertension day Mailer NEX66550MAR26-27_page-00{$day}.jpg",
             'malayalam' => "banners/malayalam_day{$day}.jpg",
             'kannada' => "banners/World Heart Day Poster_Kannada_page-00{$day}.jpg",
             'tamil' => "banners/tamil_day{$day}.jpg",
@@ -215,7 +215,7 @@ class DoctorController extends Controller
         return Storage::disk('s3')->url('World-Hypertension-Day/' . $s3Path);
     }
 
-    
+
     public function preview1(Request $request)
     {
         $request->validate([
