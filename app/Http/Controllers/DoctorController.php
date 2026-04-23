@@ -122,7 +122,7 @@ class DoctorController extends Controller
         $x = 0;
         $y = 1680;
         $textBoxWidth = 1080;
-        $color = '#ba131a';
+        $color = '#628747';
 
         if ($language === 'malayalam') {
             $y = 3366;
@@ -131,8 +131,8 @@ class DoctorController extends Controller
             $y = 1690;
             $textBoxWidth = 1084;
         } elseif ($language === 'english') {
-            $y = 5024;
-            $textBoxWidth = 3240;
+            $y = 1857;
+            $textBoxWidth = 1200;
         }
 
         $manager = new ImageManager(new Driver());
@@ -151,7 +151,7 @@ class DoctorController extends Controller
                     } elseif (in_array($language, ['tamil', 'kannada'])) {
                         $font->size(40);
                     } elseif ($language === 'english') {
-                        $font->size(120);
+                        $font->size(70);
                     } else {
                         $font->size(40);
                     }
