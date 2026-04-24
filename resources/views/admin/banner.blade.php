@@ -149,10 +149,18 @@
                                 item.language,
                                 item.day,
                                 `<a href="${item.banner_path}" class="act-btn banner-btn download-link">
-                        <i class="fa-solid fa-download"></i>
-                    </a>`,
-                                '', // created_at hidden hai
-                                ''  // action blank (optional)
+            <i class="fa-solid fa-download"></i>
+        </a>`,
+
+                                `<div class="action-btns">
+            <form action="/doctor/delete/${item.id}" method="POST" class="delete-form">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="button" class="act-btn del btn-delete" title="Delete">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </div>`
                             ]);
                         });
 
