@@ -44,7 +44,6 @@
                     <th>Language</th>
                     <th>Day</th>
                     <th>Banner</th>
-                    <th style="display:none;">Created At</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -62,7 +61,6 @@
                         <td><span class="badge-mono">{{ $emp->degree }}</span></td>
                         <td>{{ ucwords($emp->language) }}</td>
                         <td>{{ $emp->day }}</td>
-                        <td style="display:none;">{{ $emp->created_at }}</td>
                         <!-- Download Action -->
                         <td>
                             <div class="action-btns">
