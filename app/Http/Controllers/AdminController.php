@@ -106,8 +106,9 @@ class AdminController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+        $userList = User::orderBy('name')->get(['id', 'name', 'emp_code']);
 
-        return view('admin.banner', compact('employees'));
+        return view('admin.banner', compact('employees', 'userList'));
     }
 
 
@@ -202,8 +203,15 @@ class AdminController extends Controller
     {
         $query = Doctor::with('user');
 
-        if ($request->date) {
+        if ($request->filled('date')) {
             $query->whereDate('created_at', $request->date);
+        }
+
+        if ($request->filled('employee')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->employee}%")
+                    ->orWhere('emp_code', 'like', "%{$request->employee}%");
+            });
         }
 
         $banners = $query->get()->map(function ($doctor) {
