@@ -103,7 +103,7 @@ class DoctorController extends Controller
             'kannada' => "banners/World Heart Day Poster_Kannada_page-00{$day}.jpg",
             'tamil' => "banners/tamil_day{$day}.jpg",
             'odia' => "banners/oriya_day{$day}.jpg",
-            'punjabi' => "banners/Punjabi_day{$day}.jpg",
+            'punjabi' => "banners/Punjabi_page-00{$day}.jpg",
             'telugu' => "banners/Telugu_day{$day}.jpg",
             'bengali' => "banners/Bengali_day{$day}.jpg",
             'gujarati' => "banners/Gujarati_day{$day}.jpg",
@@ -133,6 +133,9 @@ class DoctorController extends Controller
         } elseif ($language === 'english') {
             $y = 1857;
             $textBoxWidth = 1200;
+        } elseif ($language === 'punjabi') {
+            $y = 1820;
+            $textBoxWidth = 1100;
         }
 
         $manager = new ImageManager(new Driver());
@@ -153,7 +156,7 @@ class DoctorController extends Controller
                     } elseif ($language === 'english') {
                         $font->size(70);
                     } else {
-                        $font->size(40);
+                        $font->size(70);
                     }
 
                     $font->color($color);
