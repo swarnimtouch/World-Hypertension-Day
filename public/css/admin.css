@@ -911,3 +911,113 @@ label.error {
     border-color: var(--accent-danger) !important;
     background: #fff5f5 !important;
 }
+
+/* ==========================================================================
+   SELECT2 CUSTOM STYLING (INDUSTRY STANDARD OVERRIDE)
+   ========================================================================== */
+
+/* 1. Main Input Box (Dropdown se pehle jo dikhta hai) */
+.filter-bar .select2-container--default .select2-selection--single {
+    background-color: #fafafa;
+    border: 1.5px solid var(--border-soft);
+    border-radius: 10px;
+    height: 43px; /* Custom inputs ki height se match karne ke liye */
+    outline: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+/* 2. Focus State (Jab click karein) */
+.filter-bar .select2-container--default.select2-container--focus .select2-selection--single,
+.filter-bar .select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 150, 57, 0.15);
+    background-color: #fff;
+}
+
+/* 3. Text Styling inside Input */
+.filter-bar .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    padding-left: 14px;
+    padding-right: 60px; /* BADA CHANGE: 38px se 60px kiya taki X ke liye jagah ban jaye */
+    line-height: normal;
+}
+
+/* 4. Dropdown Arrow Icon ki position fix */
+.filter-bar .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 41px;
+    right: 10px;
+}
+
+/* 5. Clear button (X mark) alignment */
+/* 5. Clear button (X mark) alignment & Styling */
+.filter-bar .select2-container--default .select2-selection--single .select2-selection__clear {
+    position: absolute; /* Exact jagah par lock karne ke liye */
+    right: 32px; /* Dropdown arrow ke thik thoda pehle set karega */
+    top: 50%;
+    transform: translateY(-50%); /* Perfectly Center align karne ke liye */
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--theme-teal);
+    font-size: 1.1rem; /* Thoda bold aur bada look */
+    font-weight: 600;
+    border-radius: 50%; /* Hover effect ke liye round shape dega */
+    background-color: transparent;
+    transition: all 0.2s ease;
+    margin: 0; 
+    z-index: 10; /* Click hamesha kaam kare isliye z-index diya */
+}
+
+/* 5.1 Clear button Hover effect (Naya Add Kiya Hai) */
+.filter-bar .select2-container--default .select2-selection--single .select2-selection__clear:hover {
+    background-color: #f8fff5; /* Light red circle banega background me */
+    color: var(--theme-navy); /* Text aur dark red hoga */
+    transform: translateY(-50%) scale(1.1); /* Hover par thoda sa popup effect */
+}
+
+/* 6. Dropdown Menu Wrapper (Jo list open hoti hai) */
+.select2-container--default .select2-dropdown {
+    border: 1.5px solid var(--accent) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--shadow-md) !important;
+    overflow: hidden;
+    z-index: 1050; /* DataTables ya kisi aur card ke piche na chhupe */
+}
+
+/* 7. Search Box inside the Dropdown */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 6px 10px;
+    outline: none;
+    transition: all 0.2s;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--accent);
+}
+
+/* 8. Individual Options (List items) */
+.select2-container--default .select2-results__option {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 9. Hover Effect on Options */
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: var(--theme-navy) !important;
+    color: white !important;
+}
+
+/* 10. Selected Option in List */
+.select2-container--default .select2-results__option--selected {
+    background-color: var(--bg-card-h) !important;
+    color: var(--theme-navy) !important;
+    font-weight: 600;
+}

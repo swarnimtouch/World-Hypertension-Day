@@ -120,7 +120,7 @@
             <div class="dropdown-menu">
                 <div class="dropdown-header">
                     <p>Welcome,</p>
-                    <span class="dropdown-username">{{ $employee->name ?? session('emp_code') }}</span>
+                    <span class="dropdown-username">{{ $user->name ?? session('emp_code') }}</span>
                 </div>
                 <button id="logoutBtn" class="dropdown-logout" type="button" aria-label="Logout">
                     <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
@@ -260,9 +260,30 @@
     document.getElementById('backBtn').addEventListener('click', function () {
         window.location.href = "{{ route('dashboard') }}";
     });
-    document.getElementById('logoutBtn').addEventListener('click', function () {
-        window.location.href = "{{ route('logout') }}";
+
+    // Dono Logout buttons ke liye logic (Header ka dropdown + Bottom ki button)
+    document.querySelectorAll('.dropdown-logout, .logout-btn').forEach(function(btn) {
+        btn.addEventListener('click', function () {
+            window.location.href = "{{ route('logout') }}";
+        });
     });
+
+    // Profile Dropdown Toggle Logic (Jo dashboard me tha)
+    const profileToggle = document.querySelector('.profile-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (profileToggle && dropdownMenu) {
+        profileToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!profileToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
 </script>
 
 <script nonce="{{ $cspNonce }}">

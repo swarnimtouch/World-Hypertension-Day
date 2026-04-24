@@ -131,6 +131,10 @@
                 placeholder: '-- All Employees --',
                 allowClear: true,
                 width: '100%'
+            }).on('select2:open', function () {
+                setTimeout(function() {
+                    document.querySelector('.select2-container--open .select2-search__field').focus();
+                }, 50);
             });
 
             // ── Filter variables ──────────────────────────────────

@@ -32,18 +32,20 @@ body {
   margin: 20px auto 0 auto;
   width: 100%;
   max-width: 1100px;
+  padding: 0 20px; /* NAYA ADD KIYA: Taki shell aur topbar ek line me aa jayein */
   background: transparent;
 }
 
 .topbar-inner {
   display: flex;
-  justify-content: space-between; /* left + middle + right */
+  justify-content: space-between; 
   align-items: center;
-  padding: 10px 18px; /* Top/Bottom padding properly set */
+  padding: 10px 18px; 
   border-radius: 10px;
   background: #A5D6B6;
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  position: relative; /* NAYA ADD KIYA: Center wale logo ko absolute position track karne ke liye */
 }
 
 .brand {
@@ -403,17 +405,16 @@ select:focus {
 }
 
 @media (max-width: 720px) {
+  .topbar {
+    padding: 0 14px; 
+  }
   .topbar-inner {
     flex-direction: row;
     gap: 12px;
     padding: 10px;
   }
-  .brand-logo {
-    height: 60px;
-  }
-  .brand1-logo {
-    height: 45px;
-  }
+  .brand-logo { height: 85px; } 
+  .brand1-logo { height: 65px; }
   .page {
     margin: 18px auto;
     padding: 0 14px;
@@ -430,6 +431,20 @@ select:focus {
   }
   .preview-wrap {
     padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo { height: 70px; } /* Choti screen par properly set */
+  .brand1-logo { height: 50px; }
+}
+
+@media (max-width: 768px) {
+  /* Ensure header sits above everything */
+  .topbar,
+  .topbar-inner {
+    position: relative;          
+    z-index: 10 !important;       
   }
 }
 
