@@ -105,10 +105,10 @@ class DoctorController extends Controller
             'odia' => "banners/oriya_day{$day}.jpg",
             'punjabi' => "banners/Punjabi_page-00{$day}.jpg",
             'telugu' => "banners/Telugu_day{$day}.jpg",
-            'bengali' => "banners/Bengali_day{$day}.jpg",
+            'bengali' => "banners/World Hypertension day Mailer - Bengali_page-00{$day}.jpg",
             'gujarati' => "banners/Gujarati_day{$day}.jpg",
             'hindi' => "banners/hindi_day{$day}.jpg",
-            'marathi' => "banners/marathi_day{$day}.jpg",
+            'marathi' => "banners/World Hypertension day Mailer - marathi_page-00{$day}.jpg",
         ];
 
         if (!isset($bannerMap[$language])) return null;
@@ -127,15 +127,12 @@ class DoctorController extends Controller
         if ($language === 'malayalam') {
             $y = 3366;
             $textBoxWidth = 2160;
-        } elseif (in_array($language, ['tamil', 'kannada'])) {
-            $y = 1690;
-            $textBoxWidth = 1084;
+        } elseif (in_array($language, ['bengali', 'marathi', 'punjabi'])) {
+            $y = 1820;
+            $textBoxWidth = 1100;
         } elseif ($language === 'english') {
             $y = 1857;
             $textBoxWidth = 1200;
-        } elseif ($language === 'punjabi') {
-            $y = 1820;
-            $textBoxWidth = 1100;
         }
 
         $manager = new ImageManager(new Driver());
