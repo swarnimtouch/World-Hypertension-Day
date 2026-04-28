@@ -192,16 +192,16 @@
 <body>
 
 <header class="topbar">
-  <div class="topbar-inner">
-    
+    <div class="topbar-inner">
+
         <div class="brand1">
-      <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
-    </div>
+            <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
+        </div>
 
         <div class="brand">
-      <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
-        class="brand-logo"/>
-    </div>
+            <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
+                 class="brand-logo"/>
+        </div>
 
         <div class="profile-dropdown">
             <button class="profile-toggle" type="button" aria-label="Profile Menu">
@@ -258,42 +258,48 @@
 
             </div>
         </div>
-        <div class="table-wrap">
-            <table class="downloads-table">
-                <thead>
-                <tr>
-                    <th>Poster Day</th>
-                    <th>Doctor Name</th>
-                    <th>Date Generated</th>
-                    <th>Language</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($recentPosters as $poster)
+        <div class="header-bottom">
+            <div class="count-wrap">
+                <span style="font-size: 16px;color: #009639;font-weight: 600;">Count:</span>
+                <span style="font-size: 16px;color: #009639;">{{$recentCount}}</span>
+            </div>
+
+            <div class="table-wrap">
+                <table class="downloads-table">
+                    <thead>
                     <tr>
-                        <td>Day {{ $poster->day }}</td>
-                        <td>{{ !empty($poster->name) ? $poster->name : '-' }}</td>
-                        <td>{{ $poster->created_at->format('F d, Y') }}</td>
-                        <td>{{ucwords($poster->language ??'-')}}</td>
-                        <td>
-                            <a href="{{ $poster->banner_path }}" class="download-link">
-                                <i class="fa-solid fa-download"></i> Download
-                            </a>
-                        </td>
-
+                        <th>Poster Day</th>
+                        <th>Doctor Name</th>
+                        <th>Date Generated</th>
+                        <th>Language</th>
+                        <th>Action</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-            <div class="table-footer">
-                <div id="downloadsPagination" class="pagination" aria-label="Downloads pagination"></div>
+                    </thead>
+                    <tbody>
+                    @foreach($recentPosters as $poster)
+                        <tr>
+                            <td>Day {{ $poster->day }}</td>
+                            <td>{{ !empty($poster->name) ? $poster->name : '-' }}</td>
+                            <td>{{ $poster->created_at->format('F d, Y') }}</td>
+                            <td>{{ucwords($poster->language ??'-')}}</td>
+                            <td>
+                                <a href="{{ $poster->banner_path }}" class="download-link">
+                                    <i class="fa-solid fa-download"></i> Download
+                                </a>
+                            </td>
 
-            </div>
-            <div class="view-all" style="margin-top: 10px; text-align: right;">
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <div id="downloadsPagination" class="pagination" aria-label="Downloads pagination"></div>
 
+                </div>
+                <div class="view-all" style="margin-top: 10px; text-align: right;">
+
+                </div>
             </div>
-        </div>
     </section>
 
     <div class="mobile-only logout-wrapper">
