@@ -505,11 +505,8 @@
                 let originalName = opt.data('name') || '';
 
                 // Add "Dr." prefix if not already present
-                let displayName = originalName;
-                if (displayName && !displayName.toLowerCase().startsWith('dr')) {
-                    displayName = 'Dr. ' + displayName;
-                }
-                $('#edit_doctor_name').val(displayName);
+                $('#edit_doctor_name').val(originalName);
+
             } else {
                 // Hide and clear edit field for 0 or multiple selections
                 $('#editNameWrap').hide();
