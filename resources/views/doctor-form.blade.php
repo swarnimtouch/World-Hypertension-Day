@@ -96,21 +96,90 @@
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
             color: #ffcdd2;
         }
+
+        /* ── Edit Name Wrap ── */
+        #editNameWrap {
+            display: none;
+            margin-top: 14px;
+            background: #f0faf4;
+            border: 1px solid #b2dfcc;
+            border-radius: 8px;
+            padding: 12px 14px;
+            animation: fadeSlideIn 0.25s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #editNameWrap .edit-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a6e3d;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #editNameWrap .edit-label span {
+            font-weight: 400;
+            color: #888;
+            font-size: 11px;
+        }
+
+        #edit_doctor_name {
+            width: 100%;
+            border: 1px solid #a5d6b8;
+            border-radius: 6px;
+            padding: 9px 12px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #222;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #edit_doctor_name:focus {
+            border-color: #009639;
+            box-shadow: 0 0 0 3px rgba(0, 150, 57, 0.12);
+        }
+
+        #editNameWrap .edit-hint {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #editNameWrap .edit-hint i {
+            color: #009639;
+        }
     </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="topbar-inner">
-    
+    <div class="topbar-inner">
+
         <div class="brand1">
-      <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
-    </div>
+            <img src="{{ asset('images/sartel.jpg') }}" alt="Sartel Logo" class="brand1-logo"/>
+        </div>
 
         <div class="brand">
-      <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
-        class="brand-logo"/>
-    </div>
+            <img src="{{ asset('images/hypertension day logo.jpg') }}" alt="Hypertension Day Logo"
+                 class="brand-logo"/>
+        </div>
 
         <div class="profile-dropdown">
             <button class="profile-toggle" type="button" aria-label="Profile Menu">
@@ -156,7 +225,6 @@
                     </label>
                     <label class="label" for="doctor_name">Search &amp; Select Doctor(s)</label>
                     <div class="field with-icon">
-                        {{-- multiple attribute added; select2 will handle tags --}}
                         <select id="doctor_name" class="form-select" multiple="multiple">
                             @foreach($doctors as $doctor)
                                 <option
@@ -173,6 +241,25 @@
                     {{-- Shows count badge when >0 selected --}}
                     <div style="margin-top:8px; font-size:13px; color:#555;">
                         Selected: <span id="selectedCountBadge" class="selected-count-badge">0</span> doctor(s)
+                    </div>
+
+                    {{-- Editable name field — appears when exactly 1 doctor is selected --}}
+                    <div id="editNameWrap">
+                        <div class="edit-label">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Edit Doctor Name
+                            <span>(optional — change if needed)</span>
+                        </div>
+                        <input
+                            type="text"
+                            id="edit_doctor_name"
+                            placeholder="e.g. Dr. Rajesh Kumar"
+                            autocomplete="off"
+                        />
+                        <div class="edit-hint">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Editing will update the doctor's name in the system on download.
+                        </div>
                     </div>
 
                     <div id="multiPreviewNote">
@@ -247,7 +334,7 @@
         <button id="backBtn" class="back-btn" type="button" aria-label="Go back">
             <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back
         </button>
-        <button id="logoutBtn" class="logout-btn" type="button" aria-label="Logout">
+        <button id="logoutBtnBottom" class="logout-btn" type="button" aria-label="Logout">
             <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout
         </button>
     </div>
@@ -262,13 +349,13 @@
     });
 
     // Dono Logout buttons ke liye logic (Header ka dropdown + Bottom ki button)
-    document.querySelectorAll('.dropdown-logout, .logout-btn').forEach(function(btn) {
+    document.querySelectorAll('.dropdown-logout, .logout-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
             window.location.href = "{{ route('logout') }}";
         });
     });
 
-    // Profile Dropdown Toggle Logic (Jo dashboard me tha)
+    // Profile Dropdown Toggle Logic
     const profileToggle = document.querySelector('.profile-toggle');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -303,18 +390,29 @@
 
         /**
          * Returns array of selected doctor objects:
-         * [{ id, name, degree }, ...]
+         * [{ id, name, originalName, degree }, ...]
          * Returns empty array if none selected (→ no-name poster).
+         * For single selection, uses edited name from #edit_doctor_name if present.
          */
         function getSelectedDoctors() {
             let selected = $('#doctor_name').val(); // array of option values (ids as strings)
             if (!selected || selected.length === 0) return [];
 
-            return selected.map(function (id) {
+            let editedName = $('#edit_doctor_name').val().trim();
+
+            return selected.map(function (id, index) {
                 let opt = $('#doctor_name').find('option[value="' + id + '"]');
+                let originalName = opt.data('name') || '';
+
+                // Use edited name only when single doctor selected and field has a value
+                let finalName = (selected.length === 1 && editedName)
+                    ? editedName
+                    : originalName;
+
                 return {
                     id: id,
-                    name: opt.data('name') || '',
+                    name: finalName,
+                    originalName: originalName,
                     degree: opt.data('degree') || ''
                 };
             });
@@ -389,15 +487,65 @@
                 });
         }
 
-        // ── Event listeners for preview ───────────────────────────────────────
+        // ── Event listeners ───────────────────────────────────────────────────
         $('#day_select').on('change', updatePosterPreview);
         $('#language').on('change', updatePosterPreview);
-        $('#doctor_name').on('change', updatePosterPreview);   // fires on add/remove in multi-select
+
+        // Doctor select/deselect — show edit field for single selection
+        $('#doctor_name').on('change', function () {
+            let selected = $('#doctor_name').val();
+            let doctors = getSelectedDoctors(); // at this point editedName not yet changed
+
+            if (selected && selected.length === 1) {
+                // Show editable name field
+                $('#editNameWrap').show();
+
+                // Pre-fill with original name from data attribute
+                let opt = $('#doctor_name').find('option[value="' + selected[0] + '"]');
+                let originalName = opt.data('name') || '';
+
+                // Add "Dr." prefix if not already present
+                let displayName = originalName;
+                if (displayName && !displayName.toLowerCase().startsWith('dr')) {
+                    displayName = 'Dr. ' + displayName;
+                }
+                $('#edit_doctor_name').val(displayName);
+            } else {
+                // Hide and clear edit field for 0 or multiple selections
+                $('#editNameWrap').hide();
+                $('#edit_doctor_name').val('');
+            }
+
+            updatePosterPreview();
+        });
+
+        // Live preview as user types in edit field
+        let editDebounceTimer = null;
+        $('#edit_doctor_name').on('input', function () {
+            clearTimeout(editDebounceTimer);
+            editDebounceTimer = setTimeout(function () {
+                updatePosterPreview();
+            }, 400); // debounce 400ms so we don't spam preview requests on every keystroke
+        });
+
+        // Update Select2 option label when edit field loses focus
+        $('#edit_doctor_name').on('blur', function () {
+            let selected = $('#doctor_name').val();
+            if (selected && selected.length === 1) {
+                let newName = $(this).val().trim();
+                if (newName) {
+                    let opt = $('#doctor_name').find('option[value="' + selected[0] + '"]');
+                    // Update data-name so getSelectedDoctors() picks it up correctly
+                    opt.attr('data-name', newName);
+                    opt.data('name', newName);
+                }
+            }
+        });
 
         // ── Helper: download one poster for a single doctor ───────────────────
         async function downloadOneDoctor(day, language, doctor) {
             /**
-             * doctor = { id, name, degree } or null/undefined for no-name poster
+             * doctor = { id, name, originalName, degree } or null for no-name poster
              */
             let doctorName = doctor ? formatDoctorName(doctor.name) : null;
             let doctorId = doctor ? doctor.id : '';

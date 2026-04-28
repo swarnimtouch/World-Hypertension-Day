@@ -58,7 +58,8 @@ class AdminController extends Controller
 
         $search = $request->search;
 
-        $employees = User::when($search, function ($query) use ($search) {
+        $employees = User::withCount('doctors') // 'doctors' = hasMany relationship
+        ->when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('emp_code', 'like', "%{$search}%")
                 ->orWhere('position_code', 'like', "%{$search}%")
@@ -179,9 +180,12 @@ class AdminController extends Controller
     public function getAllEmployees(Request $request)
     {
         // Fetch all employees (no pagination)
-        $employees = User::all(['name', 'emp_code', 'position_code', 'designation', 'hq_name', 'hq_code'])->toArray();
+        $employees = User::withCount('doctors')
+            ->get(['id', 'name', 'emp_code', 'position_code', 'designation', 'hq_name', 'hq_code'])
+            ->toArray();
 
-        return response()->json($employees); // Return as JSON
+        return response()->json($employees);
+
     }
 
     public function getAllDoctors(Request $request)

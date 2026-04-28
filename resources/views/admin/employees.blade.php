@@ -21,7 +21,8 @@
     <div class="filter-bar">
         <div class="search-wrap">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" id="customSearchBox" class="filter-input" placeholder="Search by Name, Code, Designation..." autocomplete="off">
+            <input type="text" id="customSearchBox" class="filter-input"
+                   placeholder="Search by Name, Code, Designation..." autocomplete="off">
         </div>
     </div>
 
@@ -29,34 +30,45 @@
         <div class="table-wrap">
             <table class="doc-table dt-responsive nowrap" id="employeesTable" style="width:100%">
                 <thead>
-                    <tr>
-                        <th class="all">Sr. No</th>
-                        <th class="all">Employee Name</th>
-                        <th>Employee Code</th>
-                        <th>Position Code</th>
-                        <th>Designation</th>
-                        <th>Hq Name</th>
-                        <th>Hq Code</th>
-                    </tr>
+                <tr>
+                    <th class="all">Sr. No</th>
+                    <th class="all">Employee Name</th>
+                    <th>Employee Code</th>
+                    <th>Position Code</th>
+                    <th>Designation</th>
+                    <th>Hq Name</th>
+                    <th>Hq Code</th>
+                    <th class="all">Banners Created</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @forelse($employees as $emp)
-                        <tr>
-                            <td class="serial-cell">{{ $loop->iteration }}</td>
-                            <td>
-                                <div class="doc-name-cell">
-                                    <span class="doc-name-text">{{ $emp->name }}</span>
-                                </div>
-                            </td>
-                            <td><span class="badge-mono emp">{{ $emp->emp_code }}</span></td>
-                            <td>{{ $emp->position_code }}</td>
-                            <td><span class="badge-mono">{{ $emp->designation }}</span></td>
-                            <td>{{ $emp->hq_name }}</td>
-                            <td>{{ $emp->hq_code }}</td>
-                        </tr>
-                    @empty
-                        <!-- Empty state is handled beautifully by DataTables -->
-                    @endforelse
+                @forelse($employees as $emp)
+                    <tr>
+                        <td class="serial-cell">{{ $loop->iteration }}</td>
+                        <td>
+                            <div class="doc-name-cell">
+                                <span class="doc-name-text">{{ $emp->name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="badge-mono emp">{{ $emp->emp_code }}</span></td>
+                        <td>{{ $emp->position_code }}</td>
+                        <td><span class="badge-mono">{{ $emp->designation }}</span></td>
+                        <td>{{ $emp->hq_name }}</td>
+                        <td>{{ $emp->hq_code }}</td>
+                        <td>  {{-- ADD THIS --}}
+                            @if($emp->doctors_count > 0)
+                                <span class="badge-mono" style="background:#e8f5e9;color:#2e7d32;">
+                                    {{ $emp->doctors_count }}
+                                </span>
+                            @else
+                                <span style="color:#aaa;">0</span>
+                            @endif
+                        </td>
+
+                    </tr>
+                @empty
+                    <!-- Empty state is handled beautifully by DataTables -->
+                @endforelse
                 </tbody>
             </table>
         </div>
@@ -72,7 +84,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <script nonce="{{ $cspNonce ?? '' }}">
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initialize DataTable with Responsive plugin
             var table = $('#employeesTable').DataTable({
                 responsive: true,
@@ -89,7 +101,7 @@
 
             // Hide default DataTables search box and bind our Custom Search Bar
             $('.dataTables_filter').hide();
-            $('#customSearchBox').on('keyup', function() {
+            $('#customSearchBox').on('keyup', function () {
                 table.search(this.value).draw();
             });
 
@@ -104,7 +116,9 @@
                             'Position Code': employee.position_code,
                             'Designation': employee.designation,
                             'Hq Name': employee.hq_name,
-                            'Hq Code': employee.hq_code
+                            'Hq Code': employee.hq_code,
+                            'Banners Created': employee.doctors_count ?? 0  // ADD THIS
+
                         }));
 
                         const wb = XLSX.utils.book_new();

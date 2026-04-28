@@ -107,7 +107,7 @@ class DoctorController extends Controller
             'telugu' => "banners/Telugu_day{$day}.jpg",
             'bengali' => "banners/World Hypertension day Mailer - Bengali_page-00{$day}.jpg",
             'gujarati' => "banners/Gujarati_day{$day}.jpg",
-            'hindi' => "banners/hindi_day{$day}.jpg",
+            'hindi' => "banners/World Hypertension day Mailer - Hindi_page-00{$day}.jpg",
             'marathi' => "banners/World Hypertension day Mailer - marathi_page-00{$day}.jpg",
         ];
 
@@ -116,8 +116,8 @@ class DoctorController extends Controller
         $bannerPath = public_path($bannerMap[$language]);
         if (!file_exists($bannerPath)) return null;
 
-//        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : '';
-        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : '';
+        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : '';
+//        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : '';
 
         $x = 0;
         $y = 1680;
@@ -127,7 +127,7 @@ class DoctorController extends Controller
         if ($language === 'malayalam') {
             $y = 3366;
             $textBoxWidth = 2160;
-        } elseif (in_array($language, ['bengali', 'marathi', 'punjabi'])) {
+        } elseif (in_array($language, ['bengali', 'marathi', 'punjabi', 'hindi'])) {
             $y = 1823;
             $textBoxWidth = 1080;
         } elseif ($language === 'english') {
@@ -200,8 +200,8 @@ class DoctorController extends Controller
         $img = $this->buildImage($day, $doctorName, $language);
         if (!$img) return null;
 
-//        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : 'no_doctor';
-        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : 'no_doctor';
+        $safeDoctorName = !empty($doctorName) ? 'Dr. ' . trim($doctorName) : 'no_doctor';
+//        $safeDoctorName = !empty($doctorName) ? trim($doctorName) : 'no_doctor';
 
         $fileName = "day{$day}_{$safeDoctorName}_{$language}.jpg";
         $s3Path = "generated/{$fileName}";
