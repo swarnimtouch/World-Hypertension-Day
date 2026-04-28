@@ -128,10 +128,10 @@ class DoctorController extends Controller
             $y = 3366;
             $textBoxWidth = 2160;
         } elseif (in_array($language, ['bengali', 'marathi', 'punjabi'])) {
-            $y = 1820;
+            $y = 1823;
             $textBoxWidth = 1080;
         } elseif ($language === 'english') {
-            $y = 1857;
+            $y = 1860;
             $textBoxWidth = 1155;
         }
 
