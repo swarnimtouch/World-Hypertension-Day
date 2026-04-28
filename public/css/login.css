@@ -8,6 +8,7 @@
 body {
   min-height: 100vh;
   display: flex;
+  flex-direction: column; /* NAYA ADD KIYA: Taaki form aur bahar wale logos upar-neeche aayein */
   align-items: center;
   justify-content: center;
   background: url("../images/background.png") center/cover no-repeat fixed;
@@ -36,11 +37,18 @@ body {
   }
 }
 
-/* TOP LOGO STYLING - Whitespace fix */
+/* TOP LOGO STYLING - Centered Single Logo */
+.top-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -10px 0 15px 0;
+}
+
 .top-logo img {
   display: block;
-  max-width: 190px; 
-  margin: -10px auto -10px auto; 
+  max-width: 190px; /* Ab ek hi logo hai, isliye purani original size wapas kar di */
+  height: auto;
   border-radius: 8px;
 }
 
@@ -152,6 +160,22 @@ h2 {
 .login-btn:active {
   transform: none;
   box-shadow: none;
+}
+
+/* NAYA CSS: Form ke bahar wale logos ke liye */
+.outside-logos {
+  display: flex;
+  justify-content: center; /* CHANGE: 'space-between' ko hatakar 'center' kiya */
+  gap: 25px; /* NAYA: Dono logos ke beech me fix aur kam space dene ke liye */
+  align-items: center;
+  width: 100%;
+  max-width: 380px; 
+  margin-bottom: 20px; 
+}
+
+.outside-logos img {
+  max-width: 160px; /* CHANGE: Size 120px se badha kar 160px kar di */
+  height: auto;
 }
 
 /* --- Responsive Layout Fixes (Issue Yaha Tha) --- */
