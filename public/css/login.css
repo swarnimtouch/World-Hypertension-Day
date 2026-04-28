@@ -162,20 +162,27 @@ h2 {
   box-shadow: none;
 }
 
-/* NAYA CSS: Form ke bahar wale logos ke liye */
 .outside-logos {
   display: flex;
-  justify-content: center; /* CHANGE: 'space-between' ko hatakar 'center' kiya */
-  gap: 25px; /* NAYA: Dono logos ke beech me fix aur kam space dene ke liye */
+  justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 380px; 
-  margin-bottom: 20px; 
+  max-width: 380px;
+  margin-bottom: 20px;
 }
 
 .outside-logos img {
-  max-width: 160px; /* CHANGE: Size 120px se badha kar 160px kar di */
+  max-width: 220px;
   height: auto;
+}
+
+/* Overlap effect */
+.outside-logos img + img {
+  margin-left: -45px; /* jitna overlap chahiye utna increase karo */
+}
+
+.outside-logos img:first-child {
+  margin-left: -30px; /* jitna left le jana ho utna adjust karo */
 }
 
 /* --- Responsive Layout Fixes (Issue Yaha Tha) --- */
