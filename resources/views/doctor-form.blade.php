@@ -290,7 +290,7 @@
                         <option value="marathi">Marathi</option>
                         <option value="odia">Odia</option>
                         <option value="punjabi">Punjabi</option>
-                        {{--                        <option value="tamil">Tamil</option>--}}
+                        <option value="tamil">Tamil</option>
                         {{--                        <option value="telugu">Telugu</option>--}}
                     </select>
 

@@ -102,7 +102,7 @@ class DoctorController extends Controller
             'english' => "banners/World Hypertension day Mailer NEX66550MAR26-27_page-00{$day}.jpg",
             'malayalam' => "banners/World Hypertension day Mailer - Malayalam_page-00{$day}.jpg",
             'kannada' => "banners/World Hypertension day Mailer - Kannada_page-00{$day}.jpg",
-            'tamil' => "banners/tamil_day{$day}.jpg",
+            'tamil' => "banners/TAMIL_page-00{$day}.jpg",
             'odia' => "banners/ORIYA_page-00{$day}.jpg",
             'punjabi' => "banners/Punjabi_page-00{$day}.jpg",
             'telugu' => "banners/Telugu_day{$day}.jpg",
