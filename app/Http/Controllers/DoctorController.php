@@ -129,10 +129,10 @@ class DoctorController extends Controller
             $textBoxWidth = 2160;
         } elseif (in_array($language, ['bengali', 'marathi', 'punjabi'])) {
             $y = 1820;
-            $textBoxWidth = 1100;
+            $textBoxWidth = 1080;
         } elseif ($language === 'english') {
             $y = 1857;
-            $textBoxWidth = 1200;
+            $textBoxWidth = 1155;
         }
 
         $manager = new ImageManager(new Driver());
@@ -144,16 +144,16 @@ class DoctorController extends Controller
                 $x + ($textBoxWidth / 2),
                 $y,
                 function ($font) use ($language, $color) {
-                    $font->file(public_path('fonts/Poppins-Bold.ttf'));
+                    $font->file(public_path('fonts/Exo-Bold.ttf'));
 
                     if ($language === 'malayalam') {
                         $font->size(80);
                     } elseif (in_array($language, ['tamil', 'kannada'])) {
                         $font->size(40);
                     } elseif ($language === 'english') {
-                        $font->size(70);
+                        $font->size(55);
                     } else {
-                        $font->size(70);
+                        $font->size(55);
                     }
 
                     $font->color($color);
