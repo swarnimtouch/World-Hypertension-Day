@@ -280,6 +280,7 @@
 
                     <label class="label" for="language">Language</label>
                     <select id="language" name="language">
+                        <option value="assamese">ASSAMESE</option>
                         <option value="bengali">Bengali</option>
                         <option value="english" selected>English</option>
                         <option value="gujarati">Gujarati</option>
@@ -289,8 +290,8 @@
                         <option value="marathi">Marathi</option>
                         <option value="odia">Odia</option>
                         <option value="punjabi">Punjabi</option>
-                        <option value="tamil">Tamil</option>
-                        <option value="telugu">Telugu</option>
+                        {{--                        <option value="tamil">Tamil</option>--}}
+                        {{--                        <option value="telugu">Telugu</option>--}}
                     </select>
 
                     <div class="actions">

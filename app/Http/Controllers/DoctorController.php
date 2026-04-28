@@ -98,15 +98,16 @@ class DoctorController extends Controller
     private function buildImage($day, $doctorName, $language = 'english')
     {
         $bannerMap = [
+            'assamese' => "banners/ASSAMESE_page-00{$day}.jpg",
             'english' => "banners/World Hypertension day Mailer NEX66550MAR26-27_page-00{$day}.jpg",
-            'malayalam' => "banners/malayalam_day{$day}.jpg",
-            'kannada' => "banners/World Heart Day Poster_Kannada_page-00{$day}.jpg",
+            'malayalam' => "banners/World Hypertension day Mailer - Malayalam_page-00{$day}.jpg",
+            'kannada' => "banners/World Hypertension day Mailer - Kannada_page-00{$day}.jpg",
             'tamil' => "banners/tamil_day{$day}.jpg",
-            'odia' => "banners/oriya_day{$day}.jpg",
+            'odia' => "banners/ORIYA_page-00{$day}.jpg",
             'punjabi' => "banners/Punjabi_page-00{$day}.jpg",
             'telugu' => "banners/Telugu_day{$day}.jpg",
             'bengali' => "banners/World Hypertension day Mailer - Bengali_page-00{$day}.jpg",
-            'gujarati' => "banners/Gujarati_day{$day}.jpg",
+            'gujarati' => "banners/World Hypertension day Mailer - Gujarati_page-00{$day}.jpg",
             'hindi' => "banners/World Hypertension day Mailer - Hindi_page-00{$day}.jpg",
             'marathi' => "banners/World Hypertension day Mailer - marathi_page-00{$day}.jpg",
         ];
@@ -124,17 +125,14 @@ class DoctorController extends Controller
         $textBoxWidth = 1080;
         $color = '#628747';
 
-        if ($language === 'malayalam') {
-            $y = 3366;
-            $textBoxWidth = 2160;
-        } elseif (in_array($language, ['bengali', 'marathi', 'punjabi', 'hindi'])) {
-            $y = 1823;
-            $textBoxWidth = 1080;
-        } elseif ($language === 'english') {
+
+        if ($language === 'english') {
             $y = 1860;
             $textBoxWidth = 1155;
+        } else {
+            $y = 1823;
+            $textBoxWidth = 1080;
         }
-
         $manager = new ImageManager(new Driver());
         $img = $manager->read($bannerPath);
 
@@ -146,11 +144,7 @@ class DoctorController extends Controller
                 function ($font) use ($language, $color) {
                     $font->file(public_path('fonts/Exo-Bold.ttf'));
 
-                    if ($language === 'malayalam') {
-                        $font->size(80);
-                    } elseif (in_array($language, ['tamil', 'kannada'])) {
-                        $font->size(40);
-                    } elseif ($language === 'english') {
+                    if ($language === 'english') {
                         $font->size(55);
                     } else {
                         $font->size(55);
