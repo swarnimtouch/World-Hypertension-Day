@@ -18,6 +18,11 @@
   </head>
   <body>
       
+    <div class="outside-logos">
+      <img src="{{asset('images/sartel_1.png')}}" alt="Sartel Logo 1" />
+      <img src="{{asset('images/sartel_2.png')}}" alt="Sartel Logo 2" />
+    </div>
+
     <div class="login-container">
       <div class="top-logo">
         <img src="{{asset('images/hypertension day logo.jpg')}}" alt="Hypertension Day Logo" />
@@ -65,7 +70,7 @@
       </form>
 
       <div class="bottom-logo">
-        <img src="{{asset('images/sartel.jpg')}}" alt="Sartel Logo" />
+        <img src="{{asset('images/cmh logo.png')}}" alt="CMH Logo" />
       </div>
     </div>
 
