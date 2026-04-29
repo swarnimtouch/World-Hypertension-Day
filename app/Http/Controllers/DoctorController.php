@@ -105,7 +105,7 @@ class DoctorController extends Controller
             'tamil' => "banners/TAMIL_page-00{$day}.jpg",
             'odia' => "banners/ORIYA_page-00{$day}.jpg",
             'punjabi' => "banners/Punjabi_page-00{$day}.jpg",
-            'telugu' => "banners/Telugu_day{$day}.jpg",
+            'telugu' => "banners/Telugu_page-00{$day}.jpg",
             'bengali' => "banners/World Hypertension day Mailer - Bengali_page-00{$day}.jpg",
             'gujarati' => "banners/World Hypertension day Mailer - Gujarati_page-00{$day}.jpg",
             'hindi' => "banners/World Hypertension day Mailer - Hindi_page-00{$day}.jpg",
