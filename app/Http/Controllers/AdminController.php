@@ -155,7 +155,7 @@ class AdminController extends Controller
             foreach ($employees as $index => $emp) {
                 $data[] = [
                     'sr_no' => $start + $index + 1,
-                    'emp_code' => '<span class="badge-mono emp">' . $emp->employee_code . '</span>',
+                    'emp_code' => '<span class="badge-mono emp">' . $emp->user->emp_code . '</span>',
                     'emp_name' => '<span style="font-weight:500;">' . ($emp->user ? $emp->user->name : 'N/A') . '</span>',
                     'doc_name' => '<div class="doc-name-cell"><span class="doc-name-text">' . $emp->name . '</span></div>',
                     'msl_code' => $emp->msl_code,

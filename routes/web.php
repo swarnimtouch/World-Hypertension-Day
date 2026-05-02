@@ -31,6 +31,9 @@ Route::post('/doctor/banner/preview', [DoctorController::class, 'preview'])->nam
 Route::get('/get-doctor-name', [DoctorController::class, 'getDoctorName'])->name('doctor.get_name');
 
  });
+Route::get('/employee-import', [DoctorController::class, 'import_employee']);
+Route::post('/employee-import', [DoctorController::class, 'import'])->name('employee.import');
+Route::post('/doctor-import', [DoctorController::class, 'import_doctor'])->name('doctor.import');
 
 Route::delete('doctor/delete/{id}', [AdminController::class, 'delete'])->name('doctor.delete');
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');

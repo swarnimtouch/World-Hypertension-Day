@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EmployeeImport;
+use App\Imports\DoctorImport;
 class DoctorController extends Controller
 {
     private $dayMessages = [
@@ -53,7 +55,7 @@ class DoctorController extends Controller
     public function create($day)
     {
         $user = Auth::user();
-        $empCode = $user->emp_code;
+        $empCode = $user->position_code;
         $doctors = MslDoctor::where('employee_code', $empCode)->get();
 
         return view('doctor-form', compact('day', 'doctors', 'user'));
@@ -372,4 +374,37 @@ class DoctorController extends Controller
             'degree' => $doctor->degree ?? ''
         ]);
     }
+    public function import_employee()
+    {
+        return view('employee_import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        $import = new EmployeeImport();
+        Excel::import($import, $request->file('file'));
+
+        return back()->with('success',
+            "Inserted: {$import->inserted} | Updated: {$import->updated}"
+        );
+    }
+
+public function import_doctor(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls'
+    ]);
+
+    $import = new DoctorImport();
+    Excel::import($import, $request->file('file'));
+
+    return back()->with('success',
+        "Inserted: {$import->inserted} | Updated: {$import->updated}"
+    );
+}
+
 }

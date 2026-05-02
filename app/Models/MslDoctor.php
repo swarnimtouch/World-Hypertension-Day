@@ -14,8 +14,7 @@ class MslDoctor extends Model
 
         public function user()
     {
-        // Assuming employee_code in doctors matches emp_code in users
-        return $this->belongsTo(User::class, 'employee_code', 'emp_code');
+        return $this->belongsTo(User::class, 'employee_code', 'position_code');
     }
 
 }
