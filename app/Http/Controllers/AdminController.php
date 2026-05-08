@@ -44,7 +44,6 @@ class AdminController extends Controller
         $totalDoctors = MslDoctor::count(); // or use ->where('role', 'employee') if filtered
         $totalDoctors1 = Doctor::count(); // or use ->where('role', 'employee') if filtered
 
-        // or use ->where('role', 'employee') if filtered
 
         return view('admin.dashboard', compact('totalEmployees', 'totalDoctors', 'totalDoctors1'));
     }
@@ -85,31 +84,92 @@ class AdminController extends Controller
     }
 
     public function listbanner(Request $request)
-
     {
         if (!session('admin_logged_in')) {
             return redirect()->route('admin.login');
         }
 
-        $search = $request->search;
-
-        $employees = Doctor::with('user')
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")          // Doctor Name
-                ->orWhere('degree', 'like', "%{$search}%")     // Speciality
-                ->orWhere('language', 'like', "%{$search}%")
-                    ->orWhere('day', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%")   // Employee Name
-                        ->orWhere('emp_code', 'like', "%{$search}%");
-                    });
-            })
-            ->orderBy('id', 'desc')
-            ->get();
-
         $userList = User::orderBy('name')->get(['id', 'name', 'emp_code']);
+        return view('admin.banner', compact('userList')); // ✅ No $employees needed
+    }
 
-        return view('admin.banner', compact('employees', 'userList'));
+    public function getAllBanners(Request $request)
+    {
+        $query = Doctor::with('user');
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        if ($request->filled('employee')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->employee}%")
+                    ->orWhere('emp_code', 'like', "%{$request->employee}%");
+            });
+        }
+
+        if ($request->ajax() && $request->has('draw')) {
+            $totalRecords = Doctor::count();
+            $filteredRecords = $query->count();
+
+            $start  = $request->input('start', 0);
+            $length = $request->input('length', 10);
+
+            // Search
+            $search = $request->input('search.value');
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('degree', 'like', "%{$search}%")
+                        ->orWhere('language', 'like', "%{$search}%")
+                        ->orWhere('day', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($sq) use ($search) {
+                            $sq->where('name', 'like', "%{$search}%")
+                                ->orWhere('emp_code', 'like', "%{$search}%");
+                        });
+                });
+                $filteredRecords = $query->count();
+            }
+
+            $banners = $query->orderBy('id', 'desc')
+                ->offset($start)
+                ->limit($length)
+                ->get();
+
+            $data = $banners->map(function ($emp, $index) use ($start) {
+                return [
+                    'sr_no'         => $start + $index + 1,
+                    'employee_name' => $emp->user ? $emp->user->name : 'N/A',
+                    'user_code'     => $emp->user ? $emp->user->emp_code : 'N/A',
+                    'name'          => $emp->name,
+                    'degree'        => $emp->degree,
+                    'language'      => ucwords($emp->language),
+                    'day'           => $emp->day,
+                    'banner_path'   => $emp->banner_path,
+                    'id'            => $emp->id,
+                ];
+            });
+
+            return response()->json([
+                'draw'            => intval($request->input('draw')),
+                'recordsTotal'    => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data'            => $data,
+            ]);
+        }
+
+        return $query->get()->map(function ($doctor) {
+            return [
+                'employee_name' => $doctor->user ? $doctor->user->name : null,
+                'user_code'     => $doctor->user ? $doctor->user->emp_code : null,
+                'name'          => $doctor->name,
+                'degree'        => $doctor->degree,
+                'language'      => $doctor->language,
+                'day'           => $doctor->day,
+                'banner_path'   => $doctor->banner_path,
+                'id'            => $doctor->id,
+            ];
+        });
     }
 
 
@@ -119,11 +179,9 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
-        // Agar DataTables se AJAX request aati hai
         if ($request->ajax()) {
             $query = MslDoctor::with('user');
 
-            // DataTables ka default search parameter
             $searchValue = $request->input('search.value');
             if ($searchValue) {
                 $query->where(function ($q) use ($searchValue) {
@@ -150,7 +208,6 @@ class AdminController extends Controller
                 ->limit($length)
                 ->get();
 
-            // Table rows ka design controller se hi banakar bhejenge
             $data = [];
             foreach ($employees as $index => $emp) {
                 $data[] = [
@@ -172,14 +229,12 @@ class AdminController extends Controller
             ]);
         }
 
-        // Jab page pehli baar load hoga toh sirf khali view bhejenge
         return view('admin.doctors');
     }
 
 
     public function getAllEmployees(Request $request)
     {
-        // Fetch all employees (no pagination)
         $employees = User::withCount('doctors')
             ->get(['id', 'name', 'emp_code', 'position_code', 'designation', 'hq_name', 'hq_code'])
             ->toArray();
@@ -190,42 +245,16 @@ class AdminController extends Controller
 
     public function getAllDoctors(Request $request)
     {
-        // Fetch all doctors with related user data (Employee name, etc.)
         $doctors = MslDoctor::with('user') // Assuming 'user' is the relationship method in MslDoctor
         ->get(['name', 'employee_code', 'msl_code', 'city', 'degree'])
             ->map(function ($doctor) {
-                // Attach employee name from related user
                 $doctor->employee_name = $doctor->user ? $doctor->user->name : null;
                 return $doctor;
             });
 
-        // Convert data to an array and return as JSON
         return response()->json($doctors);
     }
 
-    public function getAllBanners(Request $request)
-    {
-        $query = Doctor::with('user');
-
-        if ($request->filled('date')) {
-            $query->whereDate('created_at', $request->date);
-        }
-
-        if ($request->filled('employee')) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', "%{$request->employee}%")
-                    ->orWhere('emp_code', 'like', "%{$request->employee}%");
-            });
-        }
-
-        $banners = $query->get()->map(function ($doctor) {
-            $doctor->employee_name = $doctor->user ? $doctor->user->name : null;
-            $doctor->user_code = $doctor->user ? $doctor->user->emp_code : null;
-            return $doctor;
-        });
-
-        return response()->json($banners);
-    }
 
 
     // Logout

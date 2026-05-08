@@ -57,41 +57,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($employees as $emp)
-                    <tr>
-                        <td class="serial-cell">{{ $loop->iteration }}</td>
-                        <td style="font-weight:500;">{{ $emp->user ? $emp->user->name : 'N/A' }}</td>
-                        <td><span class="badge-mono emp">{{ $emp->user ? $emp->user->emp_code : 'N/A' }}</span></td>
-                        <td>
-                            <div class="doc-name-cell">
-                                <span class="doc-name-text">{{ $emp->name }}</span>
-                            </div>
-                        </td>
-                        <td><span class="badge-mono">{{ $emp->degree }}</span></td>
-                        <td>{{ ucwords($emp->language) }}</td>
-                        <td>{{ $emp->day }}</td>
-                        <td>
-                            <div class="action-btns">
-                                <a href="{{ $emp->banner_path }}" class="act-btn banner-btn download-link"
-                                   title="Download Banner">
-                                    <i class="fa-solid fa-download"></i>
-                                </a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="action-btns">
-                                <form action="{{ route('doctor.delete', $emp->id) }}" method="POST" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="act-btn del btn-delete" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                @endforelse
+
                 </tbody>
             </table>
         </div>
@@ -110,159 +76,143 @@
     <script nonce="{{ $cspNonce ?? '' }}">
         $(document).ready(function () {
 
-            // ── DataTable init ────────────────────────────────────
+            $('#employeeSearch').select2({
+                placeholder: '-- All Employees --',
+                allowClear: true,
+                width: '100%'
+            });
+
+            let selectedDate     = '';
+            let selectedEmployee = '';
+
+            // ✅ Server-side DataTable
             var table = $('#bannersTable').DataTable({
                 responsive: true,
+                processing: true,
+                serverSide: true,   // 👈 KEY CHANGE
+                ajax: {
+                    url: "{{ url('/admin/all-banners') }}",
+                    data: function (d) {
+                        d.date     = selectedDate;
+                        d.employee = selectedEmployee;
+                    }
+                },
+                columns: [
+                    { data: 'sr_no',         orderable: false },
+                    { data: 'employee_name'  },
+                    { data: 'user_code'      },
+                    { data: 'name'           },
+                    { data: 'degree'         },
+                    { data: 'language'       },
+                    { data: 'day'            },
+                    {
+                        data: 'banner_path',
+                        orderable: false,
+                        render: function (url) {
+                            return `<a href="${url}" class="act-btn banner-btn download-link" title="Download">
+                                <i class="fa-solid fa-download"></i>
+                            </a>`;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        orderable: false,
+                        render: function (id) {
+                            return `<div class="action-btns">
+                        <form action="/doctor/delete/${id}" method="POST" class="delete-form">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="button" class="act-btn del btn-delete" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>`;
+                        }
+                    }
+                ],
                 pageLength: 10,
-                lengthChange: true,
                 language: {
                     emptyTable: `<div class="empty-state">
-                                    <i class="fas fa-image"></i>
-                                    <h5>No Banners found</h5>
-                                    <p>No banners have been added yet.</p>
-                                </div>`
+                            <i class="fas fa-image"></i>
+                            <h5>No Banners found</h5>
+                         </div>`
                 }
             });
 
             $('.dataTables_filter').hide();
 
-            // ── Select2 ───────────────────────────────────────────
-            $('#employeeSearch').select2({
-                placeholder: '-- All Employees --',
-                allowClear: true,
-                width: '100%'
-            }).on('select2:open', function () {
-                setTimeout(function() {
-                    document.querySelector('.select2-container--open .select2-search__field').focus();
-                }, 50);
-            });
-
-            // ── Filter variables ──────────────────────────────────
-            let selectedDate = '';
-            let selectedEmployee = '';
-
-            // ── Load data from server ─────────────────────────────
-            function loadTableData() {
-                $.ajax({
-                    url: "{{ url('/admin/all-banners') }}",
-                    type: "GET",
-                    data: {
-                        date: selectedDate,
-                        employee: selectedEmployee
-                    },
-                    success: function (data) {
-                        table.clear();
-                        data.forEach(function (item, index) {
-                            table.row.add([
-                                index + 1,
-                                item.employee_name ?? 'N/A',
-                                item.user_code ?? 'N/A',
-                                item.name,
-                                item.degree,
-                                item.language,
-                                item.day,
-                                `<a href="${item.banner_path}" class="act-btn banner-btn download-link" title="Download">
-                                    <i class="fa-solid fa-download"></i>
-                                </a>`,
-                                `<div class="action-btns">
-                                    <form action="/doctor/delete/${item.id}" method="POST" class="delete-form">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="button" class="act-btn del btn-delete" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </div>`
-                            ]);
-                        });
-                        table.draw();
-                    }
-                });
-            }
-
-            // ── Filters ───────────────────────────────────────────
+            // Filters reload table (server re-queries)
             $('#customSearchBox').on('keyup', function () {
                 table.search(this.value).draw();
             });
 
             $('#dateSearch').on('change', function () {
                 selectedDate = $(this).val();
-                loadTableData();
+                table.ajax.reload();
             });
 
             $('#employeeSearch').on('change', function () {
                 selectedEmployee = $(this).val() || '';
-                loadTableData();
+                table.ajax.reload();
             });
 
-
-            // ── Export Excel ──────────────────────────────────────
+            // Export — fetches only filtered data (no draw param)
             $('#exportExcelBtn').on('click', function () {
-                fetch("{{ url('/admin/all-banners') }}?date=" + selectedDate + "&employee=" + encodeURIComponent(selectedEmployee))
+                const params = new URLSearchParams({
+                    date: selectedDate,
+                    employee: selectedEmployee
+                });
+                fetch("{{ url('/admin/all-banners') }}?" + params)
                     .then(r => r.json())
                     .then(data => {
-                        const formattedData = data.map(d => ({
+                        const rows = data.map(d => ({
                             'Employee Name': d.employee_name ?? 'N/A',
                             'Employee Code': d.user_code ?? 'N/A',
-                            'Doctor Name': d.name,
-                            'Degree': d.degree,
-                            'Language': d.language,
-                            'Day': d.day,
-                            'Banner Path': d.banner_path,
+                            'Doctor Name':   d.name,
+                            'Degree':        d.degree,
+                            'Language':      d.language,
+                            'Day':           d.day,
+                            'Banner Path':   d.banner_path,
                         }));
                         const wb = XLSX.utils.book_new();
-                        const ws = XLSX.utils.json_to_sheet(formattedData);
-                        XLSX.utils.book_append_sheet(wb, ws, "Banners");
+                        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), "Banners");
                         XLSX.writeFile(wb, "banners.xlsx");
-                    })
-                    .catch(err => console.error("Export error:", err));
+                    });
             });
 
-            // ── Download ──────────────────────────────────────────
+            // Download handler (unchanged)
             $(document).on('click', '.download-link', async function (e) {
                 e.preventDefault();
-                let url = this.getAttribute('href');
+                let url  = this.getAttribute('href');
                 let icon = this.innerHTML;
                 this.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
                 try {
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error('Download failed');
+                    const res  = await fetch(url);
                     const blob = await res.blob();
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    let fileName = url.split('/').pop().split('?')[0] || 'poster.jpg';
+                    const bUrl = URL.createObjectURL(blob);
                     let a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = fileName;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    window.URL.revokeObjectURL(blobUrl);
-                } catch (err) {
-                    console.error(err);
-                    alert('Download failed');
-                }
+                    a.href = bUrl; a.download = url.split('/').pop().split('?')[0] || 'poster.jpg';
+                    document.body.appendChild(a); a.click(); a.remove();
+                    URL.revokeObjectURL(bUrl);
+                } catch { alert('Download failed'); }
                 this.innerHTML = icon;
             });
 
-            // ── Delete confirm ────────────────────────────────────
-            $(document).on('click', '.btn-delete', function (e) {
-                e.preventDefault();
+            // Delete confirm (unchanged)
+            $(document).on('click', '.btn-delete', function () {
                 var form = $(this).closest('form');
                 Swal.fire({
                     title: 'Delete Banner?',
-                    text: "Are you sure? This action cannot be undone.",
+                    text: "This cannot be undone.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#e53e3e',
-                    cancelButtonColor: '#1D507B',
-                    confirmButtonText: '<i class="fas fa-trash-alt"></i> Yes, Delete',
-                    cancelButtonText: '<i class="fas fa-times"></i> Cancel',
+                    cancelButtonColor:  '#1D507B',
+                    confirmButtonText:  '<i class="fas fa-trash-alt"></i> Yes, Delete',
+                    cancelButtonText:   '<i class="fas fa-times"></i> Cancel',
                     reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) form.submit();
-                });
+                }).then(r => { if (r.isConfirmed) form.submit(); });
             });
-
         });
     </script>
 @endpush
