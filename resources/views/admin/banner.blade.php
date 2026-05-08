@@ -91,7 +91,8 @@
                 processing: true,
                 serverSide: true,   // 👈 KEY CHANGE
                 ajax: {
-                    url: "{{ url('/admin/all-banners') }}",
+                    url: "{{ route('admin.all-banners') }}",
+
                     data: function (d) {
                         d.date     = selectedDate;
                         d.employee = selectedEmployee;
@@ -119,7 +120,7 @@
                         orderable: false,
                         render: function (id) {
                             return `<div class="action-btns">
-                        <form action="/doctor/delete/${id}" method="POST" class="delete-form">
+                        <form action="{{ url('doctor/delete') }}/${id}" method="POST" class="delete-form">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="button" class="act-btn del btn-delete" title="Delete">
@@ -162,7 +163,8 @@
                     date: selectedDate,
                     employee: selectedEmployee
                 });
-                fetch("{{ url('/admin/all-banners') }}?" + params)
+                fetch("{{ route('admin.all-banners') }}?" + params)
+
                     .then(r => r.json())
                     .then(data => {
                         const rows = data.map(d => ({

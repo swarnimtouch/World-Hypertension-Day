@@ -50,7 +50,7 @@ Route::get('/admin/banner', [AdminController::class, 'listbanner'])->name('admin
 Route::get('/admin/doctors', [AdminController::class, 'listdoctors'])->name('admin.doctors');
 Route::get('/admin/all-employees', [AdminController::class, 'getAllEmployees']);
 Route::get('/admin/all-doctors', [AdminController::class, 'getAllDoctors']);
-Route::get('/admin/all-banners', [AdminController::class, 'getAllBanners']);
+Route::get('/admin/all-banners', [AdminController::class, 'getAllBanners'])->name('admin.all-banners');
 
 
 
