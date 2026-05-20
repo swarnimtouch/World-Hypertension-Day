@@ -14,13 +14,11 @@ use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
-    // Show login page
     public function showLogin()
     {
         return view('admin.login');
     }
 
-    // Handle login form
     public function login(Request $request)
     {
         $username = $request->input('username');
@@ -41,8 +39,8 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
         $totalEmployees = User::count();
-        $totalDoctors = MslDoctor::count(); // or use ->where('role', 'employee') if filtered
-        $totalDoctors1 = Doctor::count(); // or use ->where('role', 'employee') if filtered
+        $totalDoctors = MslDoctor::count();
+        $totalDoctors1 = Doctor::count();
 
 
         return view('admin.dashboard', compact('totalEmployees', 'totalDoctors', 'totalDoctors1'));
@@ -57,7 +55,7 @@ class AdminController extends Controller
 
         $search = $request->search;
 
-        $employees = User::withCount('doctors') // 'doctors' = hasMany relationship
+        $employees = User::withCount('doctors')
         ->when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('emp_code', 'like', "%{$search}%")
@@ -90,7 +88,7 @@ class AdminController extends Controller
         }
 
         $userList = User::orderBy('name')->get(['id', 'name', 'emp_code']);
-        return view('admin.banner', compact('userList')); // ✅ No $employees needed
+        return view('admin.banner', compact('userList'));
     }
 
     public function getAllBanners(Request $request)
@@ -115,7 +113,6 @@ class AdminController extends Controller
             $start  = $request->input('start', 0);
             $length = $request->input('length', 10);
 
-            // Search
             $search = $request->input('search.value');
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -145,6 +142,12 @@ class AdminController extends Controller
                     'degree'        => $emp->degree,
                     'language'      => ucwords($emp->language),
                     'day'           => $emp->day,
+                    'created_at' => $emp->created_at
+                        ? $emp->created_at
+                            ->timezone('Asia/Kolkata')
+                            ->format('d-m-Y h:i A')
+                        : '',
+
                     'banner_path'   => $emp->banner_path,
                     'id'            => $emp->id,
                 ];
@@ -166,6 +169,12 @@ class AdminController extends Controller
                 'degree'        => $doctor->degree,
                 'language'      => $doctor->language,
                 'day'           => $doctor->day,
+                'created_at' => $doctor->created_at
+                    ? $doctor->created_at
+                        ->timezone('Asia/Kolkata')
+                        ->format('d-m-Y h:i A')
+                    : '',
+
                 'banner_path'   => $doctor->banner_path,
                 'id'            => $doctor->id,
             ];
@@ -196,8 +205,8 @@ class AdminController extends Controller
                 });
             }
 
-            $totalRecords = MslDoctor::count(); // Total records without filter
-            $filteredRecords = $query->count(); // Total records with filter
+            $totalRecords = MslDoctor::count();
+            $filteredRecords = $query->count();
 
             // Pagination from DataTables
             $start = $request->input('start', 0);
@@ -245,7 +254,7 @@ class AdminController extends Controller
 
     public function getAllDoctors(Request $request)
     {
-        $doctors = MslDoctor::with('user') // Assuming 'user' is the relationship method in MslDoctor
+        $doctors = MslDoctor::with('user')
         ->get(['name', 'employee_code', 'msl_code', 'city', 'degree'])
             ->map(function ($doctor) {
                 $doctor->employee_name = $doctor->user ? $doctor->user->name : null;
@@ -257,7 +266,6 @@ class AdminController extends Controller
 
 
 
-    // Logout
     public function logout(Request $request)
     {
         $request->session()->forget('admin_logged_in');
@@ -270,9 +278,8 @@ class AdminController extends Controller
 
         if ($emp->banner_path) {
 
-            // ✅ URL ko S3 path me convert karo
             $path = parse_url($emp->banner_path, PHP_URL_PATH);
-            $path = ltrim($path, '/'); // remove starting /
+            $path = ltrim($path, '/');
 
             Log::info('Attempt delete', ['path' => $path]);
 

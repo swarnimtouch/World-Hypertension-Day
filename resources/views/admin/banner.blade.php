@@ -52,6 +52,7 @@
                     <th>Speciality</th>
                     <th>Language</th>
                     <th>Day</th>
+                    <th>Created At</th>
                     <th>Banner</th>
                     <th>Action</th>
                 </tr>
@@ -85,11 +86,10 @@
             let selectedDate     = '';
             let selectedEmployee = '';
 
-            // ✅ Server-side DataTable
             var table = $('#bannersTable').DataTable({
                 responsive: true,
                 processing: true,
-                serverSide: true,   // 👈 KEY CHANGE
+                serverSide: true,
                 ajax: {
                     url: "{{ route('admin.all-banners') }}",
 
@@ -106,6 +106,7 @@
                     { data: 'degree'         },
                     { data: 'language'       },
                     { data: 'day'            },
+                    { data: 'created_at' },
                     {
                         data: 'banner_path',
                         orderable: false,
@@ -157,7 +158,6 @@
                 table.ajax.reload();
             });
 
-            // Export — fetches only filtered data (no draw param)
             $('#exportExcelBtn').on('click', function () {
                 const params = new URLSearchParams({
                     date: selectedDate,
@@ -171,9 +171,10 @@
                             'Employee Name': d.employee_name ?? 'N/A',
                             'Employee Code': d.user_code ?? 'N/A',
                             'Doctor Name':   d.name,
-                            'Degree':        d.degree,
+                            'Speciality':        d.degree,
                             'Language':      d.language,
                             'Day':           d.day,
+                            'Created At': d.created_at,
                             'Banner Path':   d.banner_path,
                         }));
                         const wb = XLSX.utils.book_new();
@@ -182,7 +183,6 @@
                     });
             });
 
-            // Download handler (unchanged)
             $(document).on('click', '.download-link', async function (e) {
                 e.preventDefault();
                 let url  = this.getAttribute('href');
@@ -200,7 +200,6 @@
                 this.innerHTML = icon;
             });
 
-            // Delete confirm (unchanged)
             $(document).on('click', '.btn-delete', function () {
                 var form = $(this).closest('form');
                 Swal.fire({
